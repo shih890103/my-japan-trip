@@ -29,7 +29,6 @@
 
         .neo-card { border: 3px solid #333; box-shadow: 5px 5px 0px var(--orchid); background: white; border-radius: 18px; margin-bottom: 25px; transition: 0.3s; cursor: pointer; width: 100%; }
         .nav-link { background: var(--lemon); color: #333; padding: 10px; border-radius: 12px; font-weight: 900; text-align: center; display: block; margin-top: 10px; border: 2px solid #333; font-size: 13px; }
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100; align-items: center; justify-content: center; }
         .hidden-detail { display: none; }
         .bottom-btn { width: 58px; height: 58px; border: 3px solid #333; border-radius: 50%; display: flex; items-center; justify-content: center; font-size: 24px; box-shadow: 4px 4px 0px #333; }
     </style>
@@ -39,7 +38,7 @@
     <div class="sticky top-0 bg-white border-b-4 border-[#333] z-50 p-4">
         <div class="flex overflow-x-auto gap-4 no-scrollbar py-2" id="day-selector"></div>
         <div class="mt-4 flex justify-between items-center px-2">
-            <h1 class="text-2xl font-black" id="display-date">DAY 1</h1>
+            <h1 class="text-2xl font-black" id="display-date">DAY 2</h1>
             <div id="weather-tag" class="bg-[var(--lemon)] border-2 border-[#333] px-3 py-1 rounded-full font-black text-sm shadow-[2px_2px_0px_#333]">☀️ 讀取中...</div>
         </div>
     </div>
@@ -87,7 +86,6 @@
     </div>
 
     <script>
-        // 天氣預測數據 (對應 D1-D6)
         const weatherForecast = {
             1: "☀️ 京都 12°C",
             2: "☁️ 京都 10°C",
@@ -102,23 +100,24 @@
                 { t: "07:00", l: "桃園機場 T1 集合", d: "樂桃 MM024 航班報到", links: [{n: "✈️ 實時航班動態", u: "https://www.trip.com/webapp/flight/schedule/detail.html?flightNo=MM024"}] },
                 { t: "14:44", l: "🚄 JR HARUKA 選項", d: "直達京都車站 (16:04 抵達)", links: [
                     {n: "🛒 Klook 訂票($424)", u: "https://s.klook.com/c/my45rLeWwO"},
-                    {n: "🕒 官方時刻表", u: "https://www.westjr.co.jp/global/en/timetable/pdf/haruka_timetable.pdf"},
-                    {n: "📖 HARUKA 介紹", u: "https://www.westjr.co.jp/global/tc/travel/shopping/access/train.html"}
-                ]},
-                { t: "16:45", l: "🛍️ 京都站購物選項", d: "友都八喜 / 唐吉訶德", links: [
-                    {n: "💻 友都八喜 (電子/GU)", u: "https://www.yodobashi.com/"},
-                    {n: "🐧 唐吉訶德 (藥妝)", u: "https://www.donki.com/"}
+                    {n: "🕒 官方時刻表", u: "https://www.westjr.co.jp/global/en/timetable/pdf/haruka_timetable.pdf"}
                 ]},
                 { t: "18:30", l: "🍚 晚餐選項 123", d: "請選擇想吃的餐廳導航", links: [
-                    {n: "🍴 1. 居酒屋 あいよっ！", u: "https://maps.app.goo.gl/3NfF69vCFrK7vX6K6"},
-                    {n: "🥩 2. 京的燒肉處 弘", u: "https://maps.app.goo.gl/wJmreCshLpG2vMAt8"},
-                    {n: "🍜 3. 拉麵小路 / Kitada", u: "https://maps.app.goo.gl/K9A3XmX9zN2vW6q9"}
+                    {n: "🍴 1. 居酒屋 あいよっ！", u: "https://maps.app.goo.gl/uPzG7bUqY2R3X9z6A"},
+                    {n: "🥩 2. 京的燒肉處 弘", u: "https://maps.app.goo.gl/jW7W5U2D9C3k9y6B9"},
+                    {n: "🍜 3. 拉麵小路 / Kitada", u: "https://maps.app.goo.gl/kX7W5U2D9C3k9y6B9"}
                 ]}
             ]},
-            2: { date: "3/7 (六)", title: "清水寺和服", items: [
-                { t: "09:00", l: "👘 璃光和服體驗", d: "祇園店 預約 09:00", links: [{n: "📍 璃光和服地圖", u: "https://maps.app.goo.gl/7v6F69vCFrK7vX6K6"}] },
-                { t: "13:30", l: "🍚 午餐：玄品ふぐ", d: "河豚料理體驗", links: [{n: "🍴 玄品河豚 預約", u: "https://www.guenpin.com/"}] },
-                { t: "16:00", l: "🛍️ 百貨四大選項", d: "京都必逛四大百貨連結", links: [
+            2: { date: "3/7 (六)", title: "清水寺逛街走走", items: [
+                { t: "08:30", l: "🏨 Ala Hotel 出發", d: "❶ 公車 86/206：烏丸七条 ➔ 東山安井 (約 18分)", links: [{n: "🗺️ 公車路線查詢", u: "https://maps.app.goo.gl/W5z6z9R7D9C3k9y6B"}] },
+                { t: "09:00", l: "👘 璃光和服體驗", d: "❷ 祇園店租借 (預約 09:00-10:00)", links: [{n: "📍 璃光和服 導航", u: "https://maps.app.goo.gl/E9z6z9R7D9C3k9y6B"}] },
+                { t: "10:00", l: "🏮 清水寺參拜", d: "❸ 直接搭計程車上去！(10:00-11:30)", links: [] },
+                { t: "11:30", l: "🚶 三/二年坂散策", d: "❹ 漫步特色街道 (11:30-12:30)", links: [] },
+                { t: "13:00", l: "👗 還和服", d: "回璃光和服歸還裝備", links: [] },
+                { t: "13:30", l: "🍚 午餐：玄品ふぐ", d: "❺ 河豚料理 (13:30-14:30)", links: [{n: "🍴 玄品官網預約", u: "https://www.guenpin.com/"}] },
+                { t: "14:30", l: "⛩️ 八坂神社", d: "❻ 祈福、拍照 (14:30-15:00)", links: [] },
+                { t: "15:00", l: "🛶 祗園白川", d: "❼ 漫步小河畔 (15:00-15:30) ➔ 15:30 計程車回飯店", links: [] },
+                { t: "16:00", l: "🛍️ 百貨四大選項", d: "❽ 繼續逛街跟甲奔！", links: [
                     {n: "🏬 1. 永旺百貨 (AEON)", u: "https://www.aeon.jp/sc/kyoto/"},
                     {n: "🏬 2. 京都 Porta", u: "https://www.yodobashi.com/"},
                     {n: "🏬 3. 伊勢丹 (ISETAN)", u: "https://www.mistore.jp/store/kyoto.html"},
@@ -126,24 +125,21 @@
                 ]}
             ]},
             3: { date: "3/8 (日)", title: "天橋立一日遊", items: [
-                { t: "08:30", l: "📍 京都站八條口集合", d: "集合地點：AVANTI 廣場前方", links: [{n: "📍 集合點地圖", u: "https://maps.app.goo.gl/19"}] },
-                { t: "10:20", l: "🐉 天橋立 View Land", d: "吊椅 (6分鐘) 或單軌電車", links: [{n: "🚠 View Land 官網", u: "https://www.amanohashidate.com/viewland/"}] },
-                { t: "13:30", l: "🚢 伊根灣觀光船", d: "餵海鷗、漫步舟屋群", links: [{n: "🚢 觀光船時刻表", u: "https://www.ine-kankou.jp/china-t"}] },
-                { t: "18:30", l: "🦀 晚餐：蟹道樂", d: "蟹道樂東店 (飯店附近)", links: [{n: "🦀 蟹道樂 預約", u: "https://douraku.co.jp/"}] }
+                { t: "08:30", l: "📍 京都站集合", d: "AVANTI 廣場前方", links: [] },
+                { t: "10:20", l: "🐉 天橋立", d: "吊椅或單軌電車", links: [] },
+                { t: "18:30", l: "🦀 晚餐：蟹道樂", d: "大阪飯店 Check-in", links: [{n: "🦀 蟹道樂 預約", u: "https://douraku.co.jp/"}] }
             ]},
             4: { date: "3/9 (一)", title: "環球 25週年", items: [
-                { t: "08:15", l: "🎟️ USJ 入園搶券", d: "入園立刻領取任天堂世界整理券", links: [{n: "📱 USJ App 下載", u: "https://www.usj.co.jp/web/ja/jp/enjoy/app"}] },
-                { t: "14:00", l: "⚡ 25週年大巡遊", d: "NO LIMIT! Parade (皮卡丘登場)", links: [] },
-                { t: "19:00", l: "🍚 晚餐：CityWalk", d: "推薦 Red Lobster 或 難波周邊", links: [] }
+                { t: "08:15", l: "🎟️ USJ 入園", d: "領取任天堂世界整理券", links: [] },
+                { t: "14:00", l: "⚡ 25週年巡遊", d: "NO LIMIT! Parade", links: [] }
             ]},
             5: { date: "3/10 (二)", title: "勝尾寺 & 大阪城", items: [
-                { t: "09:30", l: "🔴 勝尾寺 (必拍達摩)", d: "祈求勝運，拍滿山遍野達摩", links: [] },
-                { t: "12:30", l: "🏯 大阪城公園", d: "天守閣拍照 / 安宅丸船", links: [{n: "⛴️ 安宅丸預約", u: "https://www.suijo-bus.jp/"}] },
-                { t: "17:00", l: "🗼 通天閣 + 新世界", d: "TOWER SLIDER 溜滑梯體驗", links: [] }
+                { t: "09:30", l: "🔴 勝尾寺", d: "祈求勝運", links: [] },
+                { t: "12:30", l: "🏯 大阪城公園", d: "天守閣拍照 / 安宅丸船", links: [] }
             ]},
             6: { date: "3/11 (三)", title: "準備回台", items: [
-                { t: "08:00", l: "🚄 南海電鐵 Rapi:t", d: "前往關西機場 T1", links: [{n: "🎫 Rapi:t 訂票", u: "https://www.howto-osaka.com/tc/rapit/"}] },
-                { t: "11:30", l: "✈️ MM023 起飛", d: "13:50 抵達桃園 T1", links: [{n: "✈️ 回程航班動態", u: "https://www.trip.com/webapp/flight/schedule/detail.html?flightNo=MM023"}] }
+                { t: "08:00", l: "🚄 南海電鐵", d: "前往關西機場", links: [] },
+                { t: "11:30", l: "✈️ MM023 起飛", d: "回家囉", links: [] }
             ]}
         };
 
@@ -161,18 +157,15 @@
             }
             const check = document.getElementById('checklist');
             packingItems.forEach(it => check.innerHTML += `<div class="p-4 bg-[var(--petal)] rounded-2xl border-2 border-[#333] mb-2" onclick="this.classList.toggle('opacity-50')">⬜ ${it}</div>`);
-            showDay(1);
+            showDay(2); // 預設顯示修改後的 Day 2
             renderExp();
         }
 
         function showDay(dayNum) {
             document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('day-btn-active'));
             document.getElementById(`btn-day-${dayNum}`).classList.add('day-btn-active');
-            
-            // 更新天氣預測
             document.getElementById('weather-tag').innerText = weatherForecast[dayNum] || "☀️ 12°C";
             document.getElementById('display-date').innerText = `DAY ${dayNum} ${travelData[dayNum].title}`;
-            
             const container = document.getElementById('timeline-items');
             container.innerHTML = '';
             travelData[dayNum].items.forEach((item, idx) => {
@@ -197,15 +190,15 @@
             const amt = parseInt(document.getElementById('exp-amt').value);
             const m = Array.from(document.querySelectorAll('#ledger-modal input:checked')).map(cb => cb.value);
             if(!amt || m.length === 0) return;
-            const list = JSON.parse(localStorage.getItem('jptrip_v4') || '[]');
+            const list = JSON.parse(localStorage.getItem('jptrip_v5') || '[]');
             list.push({ amt, m, per: Math.round(amt/m.length), t: new Date().toLocaleTimeString() });
-            localStorage.setItem('jptrip_v4', JSON.stringify(list));
+            localStorage.setItem('jptrip_v5', JSON.stringify(list));
             document.getElementById('exp-amt').value = '';
             renderExp();
         }
 
         function renderExp() {
-            const list = JSON.parse(localStorage.getItem('jptrip_v4') || '[]');
+            const list = JSON.parse(localStorage.getItem('jptrip_v5') || '[]');
             const sums = { "拉拉": 0, "芸婷": 0, "文錢": 0, "依辰": 0 };
             list.forEach(i => i.m.forEach(name => sums[name] += i.per));
             for(let name in sums) document.getElementById(`sum-${name}`).innerText = `¥${sums[name].toLocaleString()}`;
