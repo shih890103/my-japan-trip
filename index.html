@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>2026 JP Travel Pro V13</title>
+    <title>2026 JP Travel Pro V14</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root { --purple: #b594d0; --orchid: #d176ac; --lemon: #f9de90; --peach: #f8c6a1; --petal: #f5dde3; }
@@ -62,7 +62,6 @@
                 <div><input type="checkbox" id="p4" class="hidden" checked value="依辰"><label for="p4" class="person-label">依辰</label></div>
             </div>
             <button onclick="saveExp()" class="w-full bg-[var(--lemon)] border-3 border-[#333] py-4 rounded-xl font-black">儲存紀錄</button>
-            <div id="exp-list" class="mt-4 space-y-2"></div>
         </div>
     </div>
 
@@ -79,52 +78,42 @@
         const travelData = {
             1: { date: "3/6 (五)", title: "抵達京都", items: [
                 { t: "07:00", l: "桃園 T1 集合", d: "樂桃 MM024 (09:40-13:10)", links: [{n: "✈️ 實時航班狀態", u: "https://www.trip.com/webapp/flight/schedule/detail.html?isHideNavBar=YES&origin=210&useCTHybrid=1&flightNo=MM024&dcode=TPE&acode=KIX&queryDate=2026-03-06&queryTime=09:40:00&locale=zh-TW"}] },
-                { t: "14:44", l: "🚄 JR 關空特急 HARUKA", d: "關西機場 ➔ 京都 (地下東口出站)", links: [
-                    {n: "📖 Haruka 介紹", u: "https://www.westjr.co.jp/global/tc/travel/shopping/access/train.html"},
-                    {n: "🎟️ Klook 訂購 ($424)", u: "https://s.klook.com/c/my45rLeWwO"}
-                ]},
-                { t: "16:15", l: "🏨 Ala Hotel (入住)", d: "〒600-8212 京都府京都市下京區東洞院通七條下る塩小路町518", links: [{n: "📍 飯店地圖導航", u: "https://www.google.com/maps/search/?api=1&query=Ala+Hotel+Kyoto"}] },
-                { t: "16:45", l: "🛍️ 百貨逛街攻略", d: "友都八喜 (GU/UNIQLO/電子) | 唐吉軻德", links: [
-                    {n: "🏬 友都八喜 (9:30-20:00)", u: "https://maps.app.goo.gl/hNW5jonrJnpq5gyz8?g_st=ipc"},
-                    {n: "🏬 唐吉軻德 (9:00-12:00)", u: "https://maps.app.goo.gl/STJxYdMZazjpKscb7?g_st=com.google.maps.preview.copy"}
-                ]},
-                { t: "18:30", l: "🍚 晚餐甲奔選項", d: "京都站周邊人氣名店", links: [
-                    {n: "🍺 居酒屋 あいよっ", u: "https://maps.app.goo.gl/XcFtM5yFko9aanUd6?g_st=ipc"},
-                    {n: "🥩 京的燒肉處 弘", u: "https://maps.app.goo.gl/htujbBKAAdkCHFDt8?g_st=ipc"},
-                    {n: "🍜 拉麵小路 (百貨10F)", u: "https://maps.app.goo.gl/FGw9BVes7NiHvedF6?g_st=ipc"},
-                    {n: "🍛 Kitada", u: "https://maps.app.goo.gl/Wa2wSsbMJ3FyQmHw9?g_st=ipc"}
-                ]}
+                { t: "14:44", l: "🚄 JR HARUKA", d: "關西機場 ➔ 京都 (地下東口)", links: [{n: "🎟️ Klook 訂購", u: "https://s.klook.com/c/my45rLeWwO"}] },
+                { t: "16:15", l: "🏨 Ala Hotel (入住)", d: "〒600-8212 京都府京都市下京區東洞院通七條下る塩小路町518", links: [{n: "📍 飯店地圖", u: "https://www.google.com/maps/search/?api=1&query=Ala+Hotel+Kyoto"}] },
+                { t: "16:45", l: "🛍️ 百貨逛街攻略", d: "友都八喜 (GU/UNIQLO/電子) | 唐吉軻德", links: [{n: "🏬 友都八喜", u: "https://maps.app.goo.gl/hNW5jonrJnpq5gyz8?g_st=ipc"}, {n: "🏬 唐吉軻德", u: "https://maps.app.goo.gl/STJxYdMZazjpKscb7?g_st=com.google.maps.preview.copy"}]},
+                { t: "18:30", l: "🍚 晚餐甲奔選項", d: "居酒屋 あいよっ / 燒肉 弘 / 拉麵小路 / Kitada", links: [{n: "🥩 燒肉 弘", u: "https://maps.app.goo.gl/htujbBKAAdkCHFDt8?g_st=ipc"}, {n: "🍜 拉麵小路", u: "https://maps.app.goo.gl/FGw9BVes7NiHvedF6?g_st=ipc"}]}
             ]},
             2: { date: "3/7 (六)", title: "清水寺精華遊", items: [
-                { t: "08:30", l: "🏨 Ala飯店出發", d: "搭乘公車 86 / 206<br>路線：烏丸七條 ➔ 東山安井 (約18分)", links: [] },
-                { t: "09:00", l: "👘 璃光和服 祇園店", d: "預約 09:00-10:00 換裝", links: [{n: "📍 璃光地圖", u: "https://maps.app.goo.gl/D5QwiTvcQ6ojXG227?g_st=ipc"}] },
-                { t: "10:00", l: "⛩️ 清水寺參拜", d: "建議：直接搭計程車上去省力！", links: [] },
-                { t: "11:30", l: "🏮 三/二年坂漫步", d: "經典京都古街拍照 ➔ 13:00 還和服", links: [] },
-                { t: "13:30", l: "🐡 午餐：玄品河豚", d: "預約 13:30-14:30 享用名物料理", links: [] },
-                { t: "14:30", l: "⛩️ 八坂神社 / 祗園白川", d: "15:30 集合搭計程車回飯店休息", links: [] },
-                { t: "16:00", l: "🏬 百貨巡禮與晚餐", d: "京都站前四大百貨一次逛足！", links: [
-                    {n: "🛍️ 永旺 (UNIQLO/大創)", u: "https://maps.app.goo.gl/XLuaWAbnVcCAa4UN6?g_st=ipc"},
-                    {n: "🛍️ Porta (貝果/3coin)", u: "https://maps.app.goo.gl/RomrA1h6zyL7KHBb8?g_st=ipc"},
-                    {n: "🛍️ 伊勢丹 (伴手禮街)", u: "https://maps.app.goo.gl/qAMTkVmdBczn5Wu8A?g_st=ipc"},
-                    {n: "🛍️ Avanti (GU/唐吉)", u: "https://maps.app.goo.gl/Jw9C1PZkPN9nJ4eJ6?g_st=ipc"}
-                ]}
+                { t: "08:30", l: "🏨 Ala飯店出發", d: "公車 86/206 ➔ 東山安井 (18分)", links: [] },
+                { t: "09:00", l: "👘 璃光和服 祇園店", d: "預約 09:00 換裝", links: [{n: "📍 璃光地圖", u: "https://maps.app.goo.gl/D5QwiTvcQ6ojXG227?g_st=ipc"}] },
+                { t: "10:00", l: "⛩️ 清水寺參拜", d: "建議計程車上山省力！➔ 三/二年坂散策", links: [] },
+                { t: "13:30", l: "🐡 午餐：玄品河豚", d: "13:00還和服 ➔ 13:30用餐", links: [] },
+                { t: "16:00", l: "🏬 百貨巡禮", d: "永旺 / Porta / 伊勢丹 / Avanti", links: [{n: "🛍️ 永旺地圖", u: "https://maps.app.goo.gl/XLuaWAbnVcCAa4UN6?g_st=ipc"}, {n: "🛍️ Avanti", u: "https://maps.app.goo.gl/Jw9C1PZkPN9nJ4eJ6?g_st=ipc"}]}
             ]},
             3: { date: "3/8 (日)", title: "天橋立一日遊", items: [
-                { t: "08:30", l: "📍 京都站八條口集合", d: "AVANTI 廣場前方 (08:45 出發)", links: [{n: "📍 集合點導航", u: "https://maps.app.goo.gl/HHDwRnA8Bo8GVCYk8?g_st=ic"}] },
-                { t: "10:20", l: "🐉 天橋立 View land", d: "140分鐘：飛龍觀、特色吊椅", links: [] },
-                { t: "13:30", l: "🚢 伊根灣遊覽船", d: "90分鐘：舟屋散策、餵食海鷗", links: [] },
-                { t: "18:30", l: "🦀 大阪蟹道樂解散", d: "抵達大阪難波周邊", links: [] }
+                { t: "08:30", l: "📍 京都站八條口集合", d: "AVANTI 廣場前方 (08:45 出發)", links: [{n: "📍 集合點地圖", u: "https://maps.app.goo.gl/HHDwRnA8Bo8GVCYk8?g_st=ic"}] },
+                { t: "10:20", l: "🐉 天橋立 View land", d: "飛龍觀、特色吊椅、午餐自理", links: [] },
+                { t: "13:30", l: "🚢 伊根灣遊覽船", d: "舟屋散策、餵食海鷗", links: [] },
+                { t: "18:30", l: "🦀 大阪蟹道樂解散", d: "抵達大阪難波", links: [] }
             ]},
-            4: { date: "3/9 (一)", title: "環球 25週年", items: [
-                { t: "07:00", l: "🎡 抵達影城排隊", d: "07:45 預期開園 ➔ 秒搶任天堂整理券", links: [] },
-                { t: "13:00", l: "💃 25週年皮卡丘遊行", d: "NO LIMIT! Parade 必看版本", links: [] },
-                { t: "19:00", l: "🍚 晚餐與補貨", d: "CityWalk 或 難波周邊藥妝補貨", links: [] }
+            4: { date: "3/9 (一)", title: "環球影城 25週年", items: [
+                { t: "06:30", l: "🏨 難波飯店出發", d: "阪神難波線 (大阪難波-西九條) ➔ JR 櫻島線 (西九條-環球影城站)<br>預計車程：30分 ($400/趟)", links: [] },
+                { t: "07:00", l: "🎡 抵達影城大門口", d: "預期人潮眾多，建議比表定 9點 提早兩小時排隊", links: [] },
+                { t: "07:45", l: "🎟️ 入園與搶票策略", d: "預期「提早開園」，入園後立刻打開 App 領取「超級任天堂世界」整理券", links: [] },
+                { t: "08:00", l: "🏎️ 首衝：咚奇剛國度", d: "首選：「瘋狂礦車」或「瑪利歐賽車」", links: [] },
+                { t: "10:00", l: "📸 25週年限定拍照", d: "尋找園區內的 25週年慶祝地標或限定裝飾拍照", links: [] },
+                { t: "11:30", l: "🍔 早午餐時間", d: "推薦：小小兵樂園或 Cool Japan 聯名餐廳 (柯南/咒術)", links: [] },
+                { t: "13:00", l: "💃 25週年特別遊行", d: "觀賞「NO LIMIT! Parade」，有 25 隻皮卡丘登場！", links: [] },
+                { t: "14:30", l: "🛡️ Cool Japan 聯名", d: "體驗《咒術迴戰 The Real 4-D》或《名偵探柯南》設施", links: [] },
+                { t: "16:30", l: "💦 水世界 (WaterWorld)", d: "觀賞精彩的戶外水上特技秀", links: [] },
+                { t: "18:00", l: "🌙 夜之園區二進", d: "二進任天堂/哈利波特看點燈，此時買紀念品可避開最後關店潮", links: [] },
+                { t: "19:00", l: "🍚 晚餐與補貨", d: "推薦：CityWalk (Red Lobster) 或難波烤肉/居酒屋<br>🛒 逛街：心齋橋補貨藥妝", links: [] }
             ]},
             5: { date: "3/10 (二)", title: "大阪巡禮", items: [
-                { t: "09:30", l: "🔴 勝尾寺 (達摩)", d: "千里中央站轉乘巴士 (必拍達摩山)", links: [] },
-                { t: "12:30", l: "🏯 大阪城公園", d: "天守閣拍照、搭安宅丸造型船", links: [] },
+                { t: "09:30", l: "🔴 勝尾寺 (達摩)", d: "千里中央站轉巴士，拍攝滿山達摩", links: [] },
+                { t: "12:30", l: "🏯 大阪城公園", d: "天守閣 & 安宅丸造型船", links: [] },
                 { t: "17:00", l: "🗼 通天閣 + 炸串", d: "溜滑梯 (SLIDER) ➔ 元祖炸串達摩", links: [] },
-                { t: "20:00", l: "🛒 最後伴手禮衝刺", d: "唐吉軻德 道頓堀御堂筋店", links: [{n: "🐧 唐吉導航", u: "https://maps.app.goo.gl/PF3oZn5uV96eT9aJ6?g_st=ipc"}]}
+                { t: "20:00", l: "🛒 最後補貨", d: "唐吉軻德 道頓堀御堂筋店", links: [{n: "🐧 唐吉導航", u: "https://maps.app.goo.gl/PF3oZn5uV96eT9aJ6?g_st=ipc"}]}
             ]},
             6: { date: "3/11 (三)", title: "準備回台", items: [
                 { t: "08:00", l: "🚄 南海 Rapi:t", d: "難波 ➔ 關西機場 (40分)", links: [] },
@@ -176,18 +165,17 @@
             const amt = parseInt(document.getElementById('exp-amt').value);
             const m = Array.from(document.querySelectorAll('#ledger-modal input:checked')).map(cb => cb.value);
             if(!amt || m.length === 0) return;
-            const list = JSON.parse(localStorage.getItem('jptrip_final_v13') || '[]');
+            const list = JSON.parse(localStorage.getItem('jptrip_final_v14') || '[]');
             list.push({ amt, m, per: Math.round(amt/m.length) });
-            localStorage.setItem('jptrip_final_v13', JSON.stringify(list));
+            localStorage.setItem('jptrip_final_v14', JSON.stringify(list));
             document.getElementById('exp-amt').value = '';
             renderExp();
         }
         function renderExp() {
-            const list = JSON.parse(localStorage.getItem('jptrip_final_v13') || '[]');
+            const list = JSON.parse(localStorage.getItem('jptrip_final_v14') || '[]');
             const sums = { "拉拉": 0, "芸婷": 0, "文錢": 0, "依辰": 0 };
             list.forEach(i => i.m.forEach(name => sums[name] += i.per));
             for(let name in sums) document.getElementById(`sum-${name}`).innerText = sums[name].toLocaleString();
-            document.getElementById('exp-list').innerHTML = list.reverse().slice(0, 3).map(i => `<div class="text-xs border-b pb-1 font-bold">¥${i.amt} (${i.m.join(',')}) ➔ ¥${i.per}/人</div>`).join('');
         }
         function calculateRate() { const j = prompt("日幣:", "1000"); if(j) alert(`¥${j} ≈ NT$${Math.round(j*0.21)}`); }
         window.onload = init;
