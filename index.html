@@ -10,8 +10,8 @@
         .neo-card { border: 3px solid #333; box-shadow: 6px 6px 0px #FFD1DC; background: white; border-radius: 15px; overflow: hidden; margin-bottom: 20px; transition: 0.2s; }
         .neo-card:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px #FFD1DC; }
         .day-btn-active { background-color: #FFD1DC !important; color: #333 !important; border-color: #333 !important; }
-        .time-tag { background: #FFFACD; color: #333; padding: 2px 8px; border: 2px solid #333; font-weight: 900; border-radius: 8px; margin-right: 8px; }
-        .nav-link { background: #FFD1DC; color: #333; padding: 10px; border-radius: 12px; font-weight: 900; text-align: center; display: block; margin-top: 10px; border: 2px solid #333; font-size: 14px; }
+        .time-tag { background: #FFFACD; color: #333; padding: 2px 8px; border: 2px solid #333; font-weight: 900; border-radius: 8px; margin-right: 8px; font-size: 14px; }
+        .nav-link { background: #FFFACD; color: #333; padding: 10px; border-radius: 12px; font-weight: 900; text-align: center; display: block; margin-top: 10px; border: 2px solid #FFD1DC; font-size: 13px; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
@@ -21,7 +21,7 @@
         <div class="flex overflow-x-auto gap-3 no-scrollbar py-2" id="day-selector"></div>
         <div class="mt-4 flex justify-between items-center">
             <h1 class="text-2xl font-black text-gray-800" id="display-date">3/6 DAY 1</h1>
-            <div class="bg-[#FFFACD] border-2 border-pink-300 px-3 py-1 rounded-full font-bold text-sm text-gray-700 italic">Spring 2026 🌸</div>
+            <div class="bg-[#FFFACD] border-2 border-pink-300 px-3 py-1 rounded-full font-bold text-xs text-gray-700 italic">2026 JP TRIP 🌸</div>
         </div>
     </div>
 
@@ -38,55 +38,70 @@
             1: {
                 date: "3/6 (五)", title: "抵達京都",
                 items: [
-                    { t: "07:00", l: "桃園機場 T1", d: "辦理登機與行李託運", type: "transport", links: [{n: "✈️ 航班動態連結", u: "https://www.trip.com/webapp/flight/schedule/detail.html?flightNo=MM024"}] },
-                    { t: "13:10", l: "關西機場 T2", d: "領取行李後搭乘接駁車往 T1", type: "transport" },
-                    { t: "14:44", l: "JR HARUKA", d: "關西機場-京都 (16:04抵達)", type: "transport", links: [{n: "🎫 Klook 訂購 ($424)", u: "https://s.klook.com/c/my45rLeWwO"}, {n: "📋 HARUKA 時刻表", u: "https://www.westjr.co.jp/global/en/timetable/pdf/haruka_timetable.pdf"}] },
-                    { t: "16:15", l: "アルアホテル京都", d: "飯店辦理入住 (Ala Hotel)", type: "hotel", links: [{n: "📍 飯店地圖", u: "https://maps.app.goo.gl/hKgoxeqYYKi1teVP8?g_st=ipc"}] },
-                    { t: "16:45", l: "京都站周邊甲奔", d: "友都八喜 / 唐吉軻德 / 弘燒肉", type: "food", links: [{n: "🥩 弘燒肉導航", u: "https://maps.app.goo.gl/htujbBKAAdkCHFDt8?g_st=ipc"}, {n: "🍜 拉麵小路導航", u: "https://maps.app.goo.gl/FGw9BVes7NiHvedF6?g_st=ipc"}] }
+                    { t: "07:00", l: "桃園機場 T1 集合", d: "09:40 起飛 MM024", links: [{n: "✈️ 實時航班動態", u: "https://www.trip.com/webapp/flight/schedule/detail.html?flightNo=MM024"}] },
+                    { t: "13:10", l: "抵達關西 T2", d: "辦理入境並搭接駁車往 T1", links: [] },
+                    { t: "14:44", l: "JR 關空特急 HARUKA", d: "直達京都車站地下東口", links: [
+                        {n: "📖 Haruka 介紹", u: "https://www.westjr.co.jp/global/tc/travel/shopping/access/train.html"},
+                        {n: "🕒 Haruka 時刻表", u: "https://www.westjr.co.jp/global/en/timetable/pdf/haruka_timetable.pdf"},
+                        {n: "🛒 Klook 訂購 ($424)", u: "https://s.klook.com/c/my45rLeWwO"}
+                    ]},
+                    { t: "16:15", l: "飯店：アルアホテル京都", d: "〒600-8212 京都府京都市下京区", links: [{n: "📍 飯店 Google Map", u: "https://maps.app.goo.gl/hKgoxeqYYKi1teVP8?g_st=ipc"}] },
+                    { t: "16:45", l: "1. 晚餐甲奔選項 (點擊展開)", d: "點擊下方按鈕進行導航", links: [
+                        {n: "🍴 1. 居酒屋 あいよっ！", u: "https://maps.app.goo.gl/XcFtM5yFko9aanUd6?g_st=ipc"},
+                        {n: "🥩 2. 京的燒肉處 弘", u: "https://maps.app.goo.gl/htujbBKAAdkCHFDt8?g_st=ipc"},
+                        {n: "🍜 3. 拉麵小路", u: "https://maps.app.goo.gl/FGw9BVes7NiHvedF6?g_st=ipc"},
+                        {n: "🥢 4. 拉麵 Kitada", u: "https://maps.app.goo.gl/Wa2wSsbMJ3FyQmHw9?g_st=ipc"}
+                    ]},
+                    { t: "18:30", l: "2. 百貨購物攻略", d: "友都八喜 / 唐吉訶德", links: [
+                        {n: "🛍️ 友都八喜 (GU/UNIQLO)", u: "https://maps.app.goo.gl/hNW5jonrJnpq5gyz8?g_st=ipc"},
+                        {n: "🐧 唐吉訶德京都站前", u: "https://maps.app.goo.gl/STJxYdMZazjpKscb7?g_st=com.google.maps.preview.copy"}
+                    ]}
                 ]
             },
             2: {
-                date: "3/7 (六)", title: "清水寺走透透",
+                date: "3/7 (六)", title: "清水寺和服",
                 items: [
-                    { t: "08:30", l: "Ala飯店出發", d: "搭乘公車 86/206 至東山安井", type: "transport" },
-                    { t: "09:00", l: "璃光和服 祇園店", d: "穿著精緻和服", type: "activity", links: [{n: "📍 和服店導航", u: "https://maps.app.goo.gl/D5QwiTvcQ6ojXG227?g_st=ipc"}] },
-                    { t: "10:00", l: "清水寺 & 二三年坂", d: "建議搭計程車上去再走下來", type: "activity" },
-                    { t: "13:30", l: "午餐：玄品ふぐ", d: "體驗神級河豚料理", type: "food" },
-                    { t: "16:00", l: "京都百貨逛街", d: "永旺/Porta/伊勢丹/Avanti", type: "food", links: [{n: "🛍️ 京都 Avanti 導航", u: "https://maps.app.goo.gl/Jw9C1PZkPN9nJ4eJ6?g_st=ipc"}, {n: "🥯 貝果店導航", u: "https://maps.app.goo.gl/qAMTkVmdBczn5Wu8A?g_st=ipc"}] }
+                    { t: "08:30", l: "Ala 飯店出發", d: "公車 86/206 烏丸七条-東山安井", links: [] },
+                    { t: "09:00", l: "璃光和服 祇園店", d: "和服預約/租借", links: [{n: "📍 璃光和服地圖", u: "https://maps.app.goo.gl/D5QwiTvcQ6ojXG227?g_st=ipc"}] },
+                    { t: "10:00", l: "清水寺 / 三二年坂", d: "13:00 還和服", links: [] },
+                    { t: "13:30", l: "午餐：玄品ふぐ", d: "高級河豚料理體驗", links: [] },
+                    { t: "16:00", l: "京都百貨逛街選項 (點擊展開)", d: "百貨與特色店鋪導航", links: [
+                        {n: "🏬 1. 永旺百貨 (大創/UNIQLO)", u: "https://maps.app.goo.gl/XLuaWAbnVcCAa4UN6?g_st=ipc"},
+                        {n: "🏬 2. 京都 Porta (3coins/貝果)", u: "https://maps.app.goo.gl/RomrA1h6zyL7KHBb8?g_st=ipc"},
+                        {n: "🏬 3. 伊勢丹百貨 (拉麵小路)", u: "https://maps.app.goo.gl/qAMTkVmdBczn5Wu8A?g_st=ipc"},
+                        {n: "🏬 4. 京都 Avanti (GU/唐吉)", u: "https://maps.app.goo.gl/Jw9C1PZkPN9nJ4eJ6?g_st=ipc"}
+                    ]}
                 ]
             },
             3: {
                 date: "3/8 (日)", title: "天橋立一日遊",
                 items: [
-                    { t: "08:30", l: "京都站八條口", d: "集合地點：AVANTI 廣場前", type: "activity", links: [{n: "📍 集合點地圖", u: "https://maps.app.goo.gl/Jw9C1PZkPN9nJ4eJ6?g_st=ipc"}] },
-                    { t: "10:20", l: "天橋立 View land", d: "飛龍觀、特色吊椅 (約140分)", type: "activity" },
-                    { t: "13:30", l: "伊根灣觀光遊覽船", d: "餵食海鷗、伊根舟屋散策", type: "activity" },
-                    { t: "18:30", l: "東橫 INN 大阪難波", d: "抵達大阪解散並入住", type: "hotel", links: [{n: "📍 難波飯店地圖", u: "https://maps.app.goo.gl/J5YqMPSkTAki69qj6?g_st=ipc"}] }
+                    { t: "08:30", l: "京都站八條口集合", d: "AVANTI 廣場前方", links: [{n: "📍 集合點地圖", u: "https://maps.app.goo.gl/Jw9C1PZkPN9nJ4eJ6?g_st=ipc"}] },
+                    { t: "10:20", l: "天橋立 View land", d: "飛龍觀、特色吊椅、單軌車", links: [] },
+                    { t: "13:30", l: "伊根灣觀光遊覽船", d: "餵海鷗、伊根舟屋散策", links: [] },
+                    { t: "18:30", l: "難波飯店 Check-in", d: "東橫 INN 大阪難波 入住", links: [{n: "📍 難波飯店地圖", u: "https://maps.app.goo.gl/J5YqMPSkTAki69qj6?g_st=ipc"}] }
                 ]
             },
             4: {
                 date: "3/9 (一)", title: "環球影城 USJ",
                 items: [
-                    { t: "07:30", l: "難波飯店出發", d: "搭乘阪神/JR往環球影城站", type: "transport" },
-                    { t: "08:15", l: "USJ 入園", d: "搶任天堂整理券、馬力歐賽車", type: "activity" },
-                    { t: "14:00", l: "NO LIMIT! 巡遊", d: "必看園區大巡遊", type: "activity" },
-                    { t: "19:00", l: "晚餐：CityWalk", d: "回難波吃烤肉或藥妝補貨", type: "food" }
+                    { t: "08:15", l: "USJ 入園", d: "手機 APP 搶任天堂整理券", links: [] },
+                    { t: "19:00", l: "難波周邊 / 戎橋筋", d: "晚餐及藥妝補貨", links: [] }
                 ]
             },
             5: {
-                date: "3/10 (二)", title: "勝尾寺 & 大阪市區",
+                date: "3/10 (二)", title: "勝尾寺 & 大阪市",
                 items: [
-                    { t: "08:00", l: "飯店出發勝尾寺", d: "千里中央站轉 29 號巴士", type: "transport" },
-                    { t: "09:30", l: "勝尾寺", d: "祈求勝運、拍滿山達摩偶", type: "activity" },
-                    { t: "15:00", l: "千日前道具街", d: "買質感餐具與食品模型", type: "activity" },
-                    { t: "17:00", l: "通天閣 & 新世界", d: "玩溜滑梯、晚餐吃炸串達摩", type: "food", links: [{n: "🐧 難波唐吉導航", u: "https://maps.app.goo.gl/PF3oZn5uV96eT9aJ6?g_st=ipc"}] }
+                    { t: "09:30", l: "勝尾寺 (必拍達摩)", d: "地鐵+巴士前往勝運聖地", links: [] },
+                    { t: "15:00", l: "千日前道具街", d: "買餐具與模型", links: [] },
+                    { t: "17:00", l: "通天閣 & 新世界", d: "晚餐吃炸串、逛唐吉", links: [{n: "🐧 難波唐吉導航", u: "https://maps.app.goo.gl/PF3oZn5uV96eT9aJ6?g_st=ipc"}] }
                 ]
             },
             6: {
-                date: "3/11 (三)", title: "準備回程",
+                date: "3/11 (三)", title: "準備回台",
                 items: [
-                    { t: "08:00", l: "南海難波站", d: "搭乘 Rapi:t 前往關西機場", type: "transport" },
-                    { t: "11:30", l: "關西 T1 ➔ 桃園", d: "MM023 返程起飛", type: "transport" }
+                    { t: "08:00", l: "南海難波站", d: "搭乘南海電鐵 Rapi:t", links: [] },
+                    { t: "11:30", l: "關西機場 T1 🛫", d: "起飛 MM023 返台", links: [] }
                 ]
             }
         };
@@ -107,24 +122,21 @@
         function showDay(dayNum) {
             document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('day-btn-active'));
             document.getElementById(`btn-day-${dayNum}`).classList.add('day-btn-active');
-
             const data = travelData[dayNum];
             document.getElementById('display-date').innerText = `DAY ${dayNum} ${data.title}`;
-
             const container = document.getElementById('timeline-container');
             container.innerHTML = '';
-
             data.items.forEach((item, idx) => {
                 const card = `
                     <div class="neo-card" onclick="toggleDetail('d-${dayNum}-${idx}')">
                         <div class="p-4">
-                            <h2 class="text-lg font-black flex items-center">
+                            <h2 class="text-md font-black flex items-center">
                                 <span class="time-tag">${item.t}</span>
                                 ${item.l}
                             </h2>
-                            <p class="text-sm font-bold text-gray-500 mt-2 ml-1">✦ ${item.d}</p>
-                            <div id="d-${dayNum}-${idx}" class="hidden mt-4 pt-4 border-t-2 border-dashed border-gray-100">
-                                ${item.links ? item.links.map(l => `<a href="${l.u}" target="_blank" class="nav-link" onclick="event.stopPropagation()">📲 ${l.n}</a>`).join('') : '<p class="text-xs text-gray-400 italic text-center">詳細內容請見主行程表</p>'}
+                            <p class="text-xs font-bold text-gray-400 mt-2 ml-1">✦ ${item.d}</p>
+                            <div id="d-${dayNum}-${idx}" class="${item.links.length > 0 ? '' : 'hidden'} mt-4 pt-4 border-t-2 border-dashed border-gray-100">
+                                ${item.links.length > 0 ? item.links.map(l => `<a href="${l.u}" target="_blank" class="nav-link" onclick="event.stopPropagation()">🔗 ${l.n}</a>`).join('') : '<p class="text-[10px] text-gray-300 italic text-center">無外部連結</p>'}
                             </div>
                         </div>
                     </div>
