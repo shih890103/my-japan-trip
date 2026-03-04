@@ -3,33 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>2026 JP Travel Pro Final</title>
+    <title>2026 JP Travel Master</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root { --purple: #b594d0; --orchid: #d176ac; --lemon: #f9de90; --peach: #f8c6a1; --petal: #f5dde3; }
         body { background-color: var(--petal); font-family: -apple-system, "Noto Sans TC", sans-serif; color: #444; overflow-x: hidden; }
-        .day-btn { border: 3px solid #333; background: white; min-width: 90px; border-radius: 18px; transition: 0.2s; flex-shrink: 0; padding: 10px; }
+        .day-btn { border: 3px solid #333; background: white; min-width: 95px; border-radius: 18px; transition: 0.2s; flex-shrink: 0; padding: 10px; }
         .day-btn-active { background-color: var(--orchid) !important; color: white; transform: translateY(-3px); box-shadow: 0px 4px 0px #333; }
         .timeline-container { position: relative; padding-left: 95px; } 
         .timeline-line { position: absolute; left: 45px; top: 0; bottom: 0; width: 5px; background-color: var(--purple); z-index: 0; border-left: 2px solid #333; }
         .time-tag { position: absolute; left: -95px; top: 15px; background: var(--peach); color: #333; padding: 5px 12px; border: 3px solid #333; font-weight: 900; border-radius: 12px; z-index: 10; font-size: 14px; width: 85px; text-align: center; box-shadow: 3px 3px 0px #333; }
-        .neo-card { border: 3px solid #333; box-shadow: 5px 5px 0px var(--orchid); background: white; border-radius: 18px; margin-bottom: 25px; cursor: pointer; width: 100%; position: relative; padding: 20px; }
-        .nav-link { background: var(--lemon); color: #333; padding: 12px; border-radius: 14px; font-weight: 900; text-align: center; display: block; margin-top: 10px; border: 2px solid #333; font-size: 13px; box-shadow: 2px 2px 0px #333; text-decoration: none; }
+        .neo-card { border: 3px solid #333; box-shadow: 5px 5px 0px var(--orchid); background: white; border-radius: 18px; margin-bottom: 25px; cursor: pointer; width: 100%; position: relative; padding: 18px; }
+        .nav-link { background: var(--lemon); color: #333; padding: 10px; border-radius: 14px; font-weight: 900; text-align: center; display: block; margin-top: 8px; border: 2px solid #333; font-size: 12px; box-shadow: 2px 2px 0px #333; text-decoration: none; }
         .hidden-detail { display: none; }
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 999; align-items: center; justify-content: center; padding: 20px; }
-        .modal-content { background: white; border: 4px solid #333; border-radius: 28px; width: 100%; max-width: 420px; max-height: 85vh; overflow-y: auto; padding: 26px; position: relative; box-shadow: 12px 12px 0px #333; }
+        .modal-content { background: white; border: 4px solid #333; border-radius: 28px; width: 100%; max-width: 420px; max-height: 85vh; overflow-y: auto; padding: 25px; position: relative; box-shadow: 10px 10px 0px #333; }
         .bottom-btn { width: 58px; height: 58px; border: 3px solid #333; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; box-shadow: 4px 4px 0px #333; }
         .person-label { border: 2px solid #333; padding: 10px; border-radius: 14px; text-align: center; font-weight: 900; cursor: pointer; background: #fdfdfd; display: block; }
         input:checked + .person-label { background: var(--orchid); color: white; }
     </style>
 </head>
-<body class="pb-36">
+<body class="pb-32">
 
     <div class="sticky top-0 bg-white border-b-4 border-[#333] z-50 p-4">
         <div class="flex overflow-x-auto gap-3 no-scrollbar py-2" id="day-selector"></div>
         <div class="mt-4 flex justify-between items-center px-2">
             <h1 class="text-xl font-black" id="display-date">載入中...</h1>
-            <div id="weather-tag" class="bg-[var(--lemon)] border-2 border-[#333] px-3 py-1 rounded-full font-black text-xs shadow-[2px_2px_0px_#333]">☀️ --°C</div>
+            <div id="weather-tag" class="bg-[var(--lemon)] border-2 border-[#333] px-3 py-1 rounded-full font-black text-xs shadow-[2px_2px_0px_#333]">🌤️ --°C</div>
         </div>
     </div>
 
@@ -55,7 +55,7 @@
                 <div>文錢: <span id="sum-文錢">0</span></div><div>依辰: <span id="sum-依辰">0</span></div>
             </div>
             <input id="exp-amt" type="number" placeholder="日幣金額" class="w-full border-3 border-[#333] p-4 rounded-xl mb-4 font-black">
-            <div class="grid grid-cols-2 gap-2 mb-6 text-sm">
+            <div class="grid grid-cols-2 gap-2 mb-6">
                 <div><input type="checkbox" id="p1" class="hidden" checked value="拉拉"><label for="p1" class="person-label">拉拉</label></div>
                 <div><input type="checkbox" id="p2" class="hidden" checked value="芸婷"><label for="p2" class="person-label">芸婷</label></div>
                 <div><input type="checkbox" id="p3" class="hidden" checked value="文錢"><label for="p3" class="person-label">文錢</label></div>
@@ -78,32 +78,52 @@
 
         const travelData = {
             1: { date: "3/6 (五)", title: "抵達京都", items: [
-                { t: "07:00", l: "桃園機場 T1 集合", d: "樂桃 MM024 (09:40-13:10)", links: [{n: "✈️ 實時航班動態", u: "https://www.trip.com/webapp/flight/schedule/detail.html?isHideNavBar=YES&origin=210&useCTHybrid=1&flightNo=MM024&dcode=TPE&acode=KIX&queryDate=2026-03-06&queryTime=09:40:00&locale=zh-TW"}] },
-                { t: "16:15", l: "🏨 Ala Hotel 入住", d: "〒600-8212 京都市下京區塩小路町518<br>入住 15:00 / 退房 11:00", links: [{n: "📍 飯店地圖", u: "https://www.google.com/maps/search/?api=1&query=Ala+Hotel+Kyoto"}] },
-                { t: "18:30", l: "🍚 晚餐甲奔選項", d: "1.居酒屋 2.燒肉弘 3.拉麵小路 4.Kitada", links: [{n: "🥩 燒肉 弘 導航", u: "https://maps.app.goo.gl/htujbBKAAdkCHFDt8?g_st=ipc"}]}
+                { t: "07:00", l: "桃園機場 T1 集合", d: "樂桃 MM024 (09:40-13:10)", links: [{n: "✈️ 實時航班狀態", u: "https://www.trip.com/webapp/flight/schedule/detail.html?isHideNavBar=YES&origin=210&useCTHybrid=1&flightNo=MM024&dcode=TPE&acode=KIX&queryDate=2026-03-06&queryTime=09:40:00&locale=zh-TW"}] },
+                { t: "14:44", l: "🚄 JR 關空特急 HARUKA", d: "16:04抵達京都 (地下東口出站)", links: [
+                    {n: "📖 Haruka 介紹", u: "https://www.westjr.co.jp/global/tc/travel/shopping/access/train.html"},
+                    {n: "🕒 時刻表PDF", u: "https://www.westjr.co.jp/global/en/timetable/pdf/haruka_timetable.pdf"},
+                    {n: "🎟️ Klook 訂票 $424", u: "https://s.klook.com/c/my45rLeWwO"}
+                ]},
+                { t: "16:15", l: "🏨 アルアホテル京都 (Ala Hotel)", d: "〒600-8212 京都府京都市下京區東洞院通七條下る塩小路町518<br>入住 15:00 | 退房 11:00", links: [] },
+                { t: "16:45", l: "🛍️ 百貨攻略與甲奔", d: "友都八喜 (9:30-20:00) / 唐吉軻德 (9:00-12:00)", links: [
+                    {n: "🏬 友都八喜地圖", u: "https://maps.app.goo.gl/hNW5jonrJnpq5gyz8?g_st=ipc"},
+                    {n: "🍴 燒肉 弘 (-23:00)", u: "https://maps.app.goo.gl/htujbBKAAdkCHFDt8?g_st=ipc"},
+                    {n: "🍜 拉麵小路 (-22:00)", u: "https://maps.app.goo.gl/FGw9BVes7NiHvedF6?g_st=ipc"}
+                ]}
             ]},
             2: { date: "3/7 (六)", title: "清水寺逛街", items: [
+                { t: "08:30", l: "🏨 Ala飯店出發", d: "公車 86 / 206 (18分)", links: [] },
                 { t: "09:00", l: "👘 璃光和服 祇園店", d: "預約 09:00-10:00", links: [{n: "📍 璃光地圖", u: "https://maps.app.goo.gl/D5QwiTvcQ6ojXG227?g_st=ipc"}] },
-                { t: "13:30", l: "🍚 午餐：玄品ふぐ", d: "河豚料理 (13:30-14:30)", links: [] },
-                { t: "16:00", l: "🛍️ 百貨四大選項", d: "永旺/Porta/伊勢丹/Avanti", links: [{n: "🏬 永旺百貨(大創/GU)", u: "https://maps.app.goo.gl/XLuaWAbnVcCAa4UN6?g_st=ipc"}]}
+                { t: "10:00", l: "⛩️ 清水寺 & 二/三年坂", d: "13:00 還和服 ➔ 13:30 午餐：玄品ふぐ", links: [] },
+                { t: "16:00", l: "🛍️ 京都四大百貨", d: "永旺(UNIQLO)/Porta(貝果)/伊勢丹/Avanti(GU/唐吉)", links: [
+                    {n: "🏬 永旺百貨", u: "https://maps.app.goo.gl/XLuaWAbnVcCAa4UN6?g_st=ipc"},
+                    {n: "🏬 京都 Porta", u: "https://maps.app.goo.gl/RomrA1h6zyL7KHBb8?g_st=ipc"}
+                ]}
             ]},
-            3: { date: "3/8 (日)", title: "天橋立一日遊", items: [{ t: "08:30", l: "📍 京都站集合", d: "AVANTI 廣場前方", links: [] }] },
+            3: { date: "3/8 (日)", title: "天橋立一日遊", items: [
+                { t: "08:30", l: "📍 京都站八條口集合", d: "找到 AVANTI 廣場按箭頭前行", links: [] },
+                { t: "10:20", l: "⛰️ 天橋立 View land", d: "飛龍觀、特色吊椅 (6分)、智恩寺散策", links: [] },
+                { t: "13:30", l: "🚢 伊根灣遊覽船", d: "伊根舟屋散策、餵食海鷗與老鷹 (25分)", links: [] },
+                { t: "17:30", l: "🚌 返程解散", d: "京都八條口 ➔ 18:30 大阪蟹道樂東店解散", links: [] }
+            ]},
             4: { date: "3/9 (一)", title: "環球 25週年", items: [
-                { t: "07:00", l: "🎡 抵達影城排隊", d: "預計 07:45 提早開園，立刻搶任天堂整理券", links: [] },
-                { t: "13:00", l: "💃 25週年特別遊行", d: "NO LIMIT! Parade (皮卡丘登場！)", links: [] }
+                { t: "07:00", l: "🎡 抵達影城排隊", d: "07:45 預期開園，入園秒搶任天堂整理券", links: [] },
+                { t: "08:00", l: "🍌 首衝：咚奇剛國度", d: "25週年特別遊行 (13:00) 25隻皮卡丘！", links: [] },
+                { t: "18:00", l: "🌙 夜間二進任天堂", d: "19:00 晚餐：CityWalk 或回難波藥妝補貨", links: [] }
             ]},
-            5: { date: "3/10 (二)", title: "勝尾寺 & 大阪巡禮", items: [
-                { t: "08:00", l: "🏨 出發勝尾寺", d: "❶ 御堂筋線「千里中央站」<br>❷ 轉 29 號巴士或計程車 (15分)", links: [] },
-                { t: "09:30", l: "🔴 勝尾寺 (勝運達摩)", d: "祈求勝運、拍攝滿山遍野的達摩偶（必拍景點）", links: [] },
-                { t: "12:30", l: "🏯 大阪城公園", d: "天守閣拍照、搭安宅丸造型護城河船", links: [] },
-                { t: "15:00", l: "🍳 千日前道具街", d: "日本橋站：食品模型、質感餐具、刀具", links: [] },
-                { t: "17:00", l: "🗼 通天閣 + 新世界", d: "溜滑梯 (TOWER SLIDER) 與地標合照<br>🍴 甲奔：元祖炸串達摩、八重勝", links: [] },
-                { t: "20:00", l: "🛒 難波補貨買買買", d: "唐吉訶德 道頓堀御堂筋店 (走5分鐘)", links: [{n: "🐧 唐吉訶德導航", u: "https://maps.app.goo.gl/PF3oZn5uV96eT9aJ6?g_st=ipc"}] }
+            5: { date: "3/10 (二)", title: "大阪巡禮", items: [
+                { t: "09:30", l: "🔴 勝尾寺 (必拍達摩)", d: "御堂筋線「千里中央站」轉 29 巴士", links: [] },
+                { t: "12:30", l: "🏯 大阪城公園", d: "天守閣 & 安宅丸造型護城河船", links: [] },
+                { t: "17:00", l: "🗼 通天閣 + 炸串", d: "溜滑梯 (SLIDER) & 炸串達摩/八重勝", links: [] },
+                { t: "20:00", l: "🛍️ 難波最後補貨", d: "唐吉軻德 道頓堀御堂筋店", links: [{n: "🐧 唐吉導航", u: "https://maps.app.goo.gl/PF3oZn5uV96eT9aJ6?g_st=ipc"}]}
             ]},
-            6: { date: "3/11 (三)", title: "回家囉", items: [{ t: "08:00", l: "🚄 南海電鐵", d: "前往機場", links: [] }] }
+            6: { date: "3/11 (三)", title: "準備回台", items: [
+                { t: "08:00", l: "🚄 南海電鐵 Rapi:t", d: "南海難波站 ➔ 關西機場 T1 (約 40 分)", links: [] },
+                { t: "09:30", l: "✈️ 機場報到/補貨", d: "大阪關西T1 11:30 ➔ 桃園機場T1 13:50", links: [] }
+            ]}
         };
 
-        const packingItems = ["護照", "日幣現金", "西瓜卡/App", "行動電源", "常備藥", "好走的鞋", "環保袋"];
+        const packingItems = ["護照", "日幣現金", "行動電源", "USJ 門票 QR", "好走的鞋", "環保袋", "海鷗零食錢"];
 
         function init() {
             const selector = document.getElementById('day-selector');
@@ -131,7 +151,7 @@
                     <span class="time-tag">${item.t}</span>
                     <div class="neo-card" onclick="toggleD('d-${dayNum}-${idx}')">
                         <h2 class="text-lg font-black leading-tight">${item.l}</h2>
-                        <div id="d-${dayNum}-${idx}" class="hidden-detail mt-4 text-sm font-bold border-t-2 border-dashed pt-4 leading-relaxed">
+                        <div id="d-${dayNum}-${idx}" class="hidden-detail mt-3 text-sm font-bold border-t-2 border-dashed pt-3 leading-relaxed">
                             ${item.d}
                             ${item.links ? item.links.map(l => `<a href="${l.u}" target="_blank" class="nav-link">🔗 ${l.n}</a>`).join('') : ''}
                         </div>
@@ -147,18 +167,18 @@
             const amt = parseInt(document.getElementById('exp-amt').value);
             const m = Array.from(document.querySelectorAll('#ledger-modal input:checked')).map(cb => cb.value);
             if(!amt || m.length === 0) return;
-            const list = JSON.parse(localStorage.getItem('jptrip_v10') || '[]');
+            const list = JSON.parse(localStorage.getItem('jptrip_final_v11') || '[]');
             list.push({ amt, m, per: Math.round(amt/m.length) });
-            localStorage.setItem('jptrip_v10', JSON.stringify(list));
+            localStorage.setItem('jptrip_final_v11', JSON.stringify(list));
             document.getElementById('exp-amt').value = '';
             renderExp();
         }
         function renderExp() {
-            const list = JSON.parse(localStorage.getItem('jptrip_v10') || '[]');
+            const list = JSON.parse(localStorage.getItem('jptrip_final_v11') || '[]');
             const sums = { "拉拉": 0, "芸婷": 0, "文錢": 0, "依辰": 0 };
             list.forEach(i => i.m.forEach(name => sums[name] += i.per));
             for(let name in sums) document.getElementById(`sum-${name}`).innerText = sums[name].toLocaleString();
-            document.getElementById('exp-list').innerHTML = list.reverse().slice(0, 3).map(i => `<div class="text-xs border-b pb-1 font-bold">¥${i.amt} (${i.m.join(',')}) ➔ ¥${i.per}/人</div>`).join('');
+            document.getElementById('exp-list').innerHTML = list.reverse().slice(0, 3).map(i => `<div class="text-xs border-b pb-1 font-bold">¥${i.amt} (${i.m.join(',')}) ⮕ ¥${i.per}/人</div>`).join('');
         }
         function calculateRate() { const j = prompt("日幣:", "1000"); if(j) alert(`¥${j} ≈ NT$${Math.round(j*0.21)}`); }
         window.onload = init;
