@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 JP Travel Final Pro</title>
+    <title>2026 JP Travel Final</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root { 
@@ -12,20 +12,18 @@
         }
         body { background-color: var(--petal); font-family: -apple-system, "Noto Sans TC", sans-serif; color: #444; overflow-x: hidden; }
         
-        /* 頂部字體放大 */
         .day-btn { border: 3px solid #333; background: white; min-width: 85px; border-radius: 18px; transition: 0.2s; }
         .day-btn-active { background-color: var(--orchid) !important; color: white; transform: translateY(-3px); box-shadow: 0px 4px 0px #333; }
         .day-label { font-size: 14px; font-weight: 900; }
         .date-label { font-size: 18px; font-weight: 900; }
 
-        /* 佈局優化：防止時間壓到行程 */
-        .timeline-container { position: relative; padding-left: 90px; } /* 增加左邊距 */
+        .timeline-container { position: relative; padding-left: 90px; }
         .timeline-line { position: absolute; left: 40px; top: 0; bottom: 0; width: 5px; background-color: var(--purple); z-index: 0; border-left: 2px solid #333; }
         
         .time-tag { 
             position: absolute; left: -90px; top: 15px;
             background: var(--peach); color: #333; padding: 5px 12px; border: 3px solid #333; 
-            font-weight: 900; border-radius: 12px; z-index: 10; font-size: 15px; /* 時間再放大 */
+            font-weight: 900; border-radius: 12px; z-index: 10; font-size: 15px;
             width: 80px; text-align: center; box-shadow: 3px 3px 0px #333;
         }
 
@@ -34,6 +32,7 @@
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100; align-items: center; justify-content: center; }
         .hidden-detail { display: none; }
         .bottom-btn { width: 55px; height: 55px; border: 3px solid #333; border-radius: 50%; display: flex; items-center; justify-content: center; font-size: 22px; box-shadow: 4px 4px 0px #333; }
+        .item-checked { text-decoration: line-through; opacity: 0.5; }
     </style>
 </head>
 <body class="pb-28">
@@ -42,7 +41,7 @@
         <div class="flex overflow-x-auto gap-4 no-scrollbar py-2" id="day-selector"></div>
         <div class="mt-4 flex justify-between items-center px-2">
             <h1 class="text-2xl font-black" id="display-date">DAY 1</h1>
-            <div id="weather-tag" class="bg-[var(--lemon)] border-2 border-[#333] px-3 py-1 rounded-full font-bold text-sm shadow-[2px_2px_0px_#333]">☀️ 12°C</div>
+            <div id="weather-tag" class="bg-[var(--lemon)] border-2 border-[#333] px-3 py-1 rounded-full font-bold text-sm">☀️ 12°C</div>
         </div>
     </div>
 
@@ -61,7 +60,7 @@
     </div>
 
     <div id="ledger-modal" class="modal" onclick="if(event.target==this)closeModal('ledger-modal')">
-        <div class="bg-white border-4 border-[#333] p-6 rounded-3xl w-[92%] max-w-md shadow-[8px_8px_0px_#333] overflow-y-auto max-h-[85vh]">
+        <div class="bg-white border-4 border-[#333] p-6 rounded-3xl w-[92%] max-w-md shadow-[8px_8px_0px #333] overflow-y-auto max-h-[85vh]">
             <h2 class="text-xl font-black mb-4 text-[var(--orchid)]">💰 實名分帳 & 總計</h2>
             <div id="total-summary" class="grid grid-cols-2 gap-2 mb-4 bg-gray-100 p-3 rounded-2xl border-2 border-gray-300 text-xs font-black text-center">
                 <div>拉拉: <span id="sum-拉拉" class="text-pink-600">0</span></div>
@@ -92,36 +91,40 @@
         const weatherData = { 1:"☀️ 12°C", 2:"☁️ 10°C", 3:"🌤️ 8°C", 4:"☀️ 11°C", 5:"🌧️ 9°C", 6:"🌤️ 12°C" };
         const travelData = {
             1: { date: "3/6 (五)", title: "抵達京都", items: [
-                { t: "07:00", l: "桃園機場集合", d: "MM024 (09:40-13:10)", links: [{n: "✈️ 航班動態", u: "https://www.trip.com/webapp/flight/schedule/detail.html?flightNo=MM024"}] },
-                { t: "14:44", l: "JR HARUKA", d: "京都車站預計 16:04 抵達", links: [] },
-                { t: "17:00", l: "京都車站晚餐", d: "燒肉弘/拉麵小路/Kitada", links: [{n: "🥩 燒肉弘 導航", u: "http://google.com"}] }
+                { t: "07:00", l: "桃園機場 T1 集合", d: "09:40 起飛 MM024", links: [{n: "✈️ 實時航班動態", u: "https://www.trip.com/webapp/flight/schedule/detail.html?flightNo=MM024"}] },
+                { t: "13:10", l: "抵達關西 T2", d: "辦理入境並搭接駁車往 T1", links: [] },
+                { t: "14:44", l: "JR HARUKA", d: "直達京都車站地下東口", links: [{n: "🛒 Klook 訂購 ($424)", u: "https://s.klook.com/c/my45rLeWwO"}] },
+                { t: "16:45", l: "晚餐甲奔選項", d: "居酒屋/燒肉/拉麵", links: [{n: "🥩 京的燒肉處 弘", u: "http://google.com"}, {n: "🍜 拉麵小路", u: "http://google.com"}] },
+                { t: "18:30", l: "百貨購物攻略", d: "友都八喜 / 唐吉訶德", links: [{n: "🛍️ 友都八喜", u: "http://google.com"}] }
             ]},
             2: { date: "3/7 (六)", title: "清水寺和服", items: [
-                { t: "09:00", l: "璃光和服 祇園店", d: "預約名單核對", links: [] },
-                { t: "11:00", l: "清水寺散策", d: "地主神社、二年坂、三年坂", links: [] },
-                { t: "16:00", l: "百貨逛街", d: "永旺/Porta/伊勢丹", links: [] }
+                { t: "09:00", l: "璃光和服 祇園店", d: "和服預約/租借", links: [{n: "📍 璃光和服地圖", u: "http://google.com"}] },
+                { t: "13:30", l: "午餐：玄品ふぐ", d: "高級河豚料理體驗", links: [] },
+                { t: "16:00", l: "京都百貨逛街", d: "永旺/Porta/伊勢丹/Avanti", links: [{n: "🏬 京都 Porta", u: "http://google.com"}] }
             ]},
             3: { date: "3/8 (日)", title: "天橋立一日遊", items: [
-                { t: "08:30", l: "京都站八條口集合", d: "集合點：AVANTI 廣場", links: [] },
-                { t: "10:30", l: "天橋立 View Land", d: "飛龍觀、特色吊椅體驗", links: [] },
-                { t: "14:00", l: "伊根舟屋", d: "觀光船餵海鷗", links: [] }
+                { t: "08:30", l: "京都站八條口集合", d: "AVANTI 廣場前方", links: [{n: "📍 集合點地圖", u: "http://google.com"}] },
+                { t: "10:20", l: "天橋立 View land", d: "飛龍觀、特色吊椅", links: [] },
+                { t: "13:30", l: "伊根灣觀光船", d: "餵海鷗、伊根舟屋散策", links: [] }
             ]},
             4: { date: "3/9 (一)", title: "環球 25週年", items: [
-                { t: "06:30", l: "影城正門集合", d: "建議提早卡位", links: [] },
-                { t: "08:00", l: "入園搶券", d: "APP 領取任天堂整理券", links: [] },
-                { t: "13:00", l: "25週年遊行", d: "NO LIMIT! Parade (皮卡丘)", links: [] },
-                { t: "19:00", l: "任天堂世界夜景", d: "奇諾比奧點燈氛圍", links: [] }
+                { t: "07:00", l: "抵達影城大門口", d: "建議提早排隊", links: [] },
+                { t: "08:00", l: "入園搶券", d: "APP 領取超級任天堂世界整理券", links: [] },
+                { t: "13:00", l: "25週年特別遊行", d: "觀賞全新 NO LIMIT! Parade", links: [] },
+                { t: "14:30", l: "Cool Japan 活動", d: "咒術迴戰 4-D 或 名偵探柯南", links: [] },
+                { t: "19:00", l: "二進任天堂", d: "體驗點燈氛圍並購買紀念品", links: [] }
             ]},
-            5: { date: "3/10 (二)", title: "勝尾寺 & 大阪", items: [
-                { t: "10:00", l: "勝尾寺", d: "全日本最可愛達摩寺廟", links: [] },
-                { t: "17:00", l: "通天閣新世界", d: "晚餐炸串 & 唐吉訶德", links: [] }
+            5: { date: "3/10 (二)", title: "勝尾寺 & 大阪市", items: [
+                { t: "09:30", l: "勝尾寺 (必拍達摩)", d: "地鐵+巴士前往勝運聖地", links: [] },
+                { t: "17:00", l: "通天閣 & 新世界", d: "晚餐吃炸串、逛唐吉", links: [] }
             ]},
             6: { date: "3/11 (三)", title: "準備回台", items: [
-                { t: "09:30", l: "關西機場 T1", d: "MM023 11:30 起飛", links: [{n: "🛍️ 免稅店預訂", u: "https://www.kixdutyfree.jp"}] }
+                { t: "08:00", l: "南海難波站", d: "搭乘南海電鐵 Rapi:t", links: [] },
+                { t: "11:30", l: "關西機場 T1 🛫", d: "MM023 起飛返台", links: [] }
             ]}
         };
 
-        const packingItems = ["護照", "日幣", "行動電源", "網卡", "外套", "常備藥"];
+        const packingItems = ["護照/簽證", "日幣現金", "行動電源", "網卡", "外套", "常備藥"];
 
         function init() {
             const selector = document.getElementById('day-selector');
@@ -134,7 +137,7 @@
                 </button>`;
             }
             const check = document.getElementById('checklist');
-            packingItems.forEach(it => check.innerHTML += `<div class="p-4 bg-[var(--petal)] rounded-2xl border-2 border-[#333] mb-2" onclick="this.classList.toggle('opacity-50')">⬜ ${it}</div>`);
+            packingItems.forEach(it => check.innerHTML += `<div class="p-4 bg-[var(--petal)] rounded-2xl border-2 border-[#333] mb-2" onclick="this.classList.toggle('item-checked')">⬜ ${it}</div>`);
             showDay(1);
             renderExp();
         }
