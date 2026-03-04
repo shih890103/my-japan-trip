@@ -3,67 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 JP Travel Final</title>
+    <title>2026 JP Travel Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root { 
             --purple: #b594d0; --orchid: #d176ac; --lemon: #f9de90; 
             --peach: #f8c6a1; --petal: #f5dde3; 
         }
-        body { background-color: var(--petal); font-family: -apple-system, "Noto Sans TC", sans-serif; color: #444; }
+        body { background-color: var(--petal); font-family: -apple-system, "Noto Sans TC", sans-serif; color: #444; overflow-x: hidden; }
         .neo-card { border: 3px solid #333; box-shadow: 5px 5px 0px var(--orchid); background: white; border-radius: 18px; margin-bottom: 20px; transition: 0.3s; cursor: pointer; }
         .day-btn { border: 3px solid #333; background: white; min-width: 75px; border-radius: 15px; }
         .day-btn-active { background-color: var(--orchid) !important; color: white; transform: translateY(-3px); box-shadow: 0px 4px 0px #333; }
-        /* 時間軸縮窄且直線致中 */
-        .timeline-area { width: 50px; position: relative; display: flex; justify-content: center; flex-shrink: 0; }
-        .timeline-line { position: absolute; width: 4px; background-color: var(--purple); top: 0; bottom: 0; left: 50%; transform: translateX(-50%); z-index: 0; }
-        .time-tag { background: var(--peach); color: #333; padding: 2px 6px; border: 2px solid #333; font-weight: 900; border-radius: 6px; z-index: 10; font-size: 11px; position: relative; top: 18px; height: fit-content; }
+        
+        /* 縱線至最左側並與放大時間致中 */
+        .timeline-container { position: relative; padding-left: 65px; }
+        .timeline-line { position: absolute; left: 32px; top: 0; bottom: 0; width: 5px; background-color: var(--purple); z-index: 0; border-left: 2px solid #333; }
+        .time-tag { 
+            position: absolute; left: -65px; top: 20px;
+            background: var(--peach); color: #333; padding: 4px 10px; border: 3px solid #333; 
+            font-weight: 900; border-radius: 10px; z-index: 10; font-size: 14px; /* 時間調大 */
+            width: 75px; text-align: center; box-shadow: 3px 3px 0px #333;
+        }
+
         .nav-link { background: var(--lemon); color: #333; padding: 10px; border-radius: 12px; font-weight: 900; text-align: center; display: block; margin-top: 10px; border: 2px solid #333; font-size: 13px; }
         .member-cb:checked + label { background-color: var(--lemon); border-color: #333; transform: scale(1.05); }
-        #ledger-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100; align-items: center; justify-content: center; }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100; align-items: center; justify-content: center; }
         .hidden-detail { display: none; }
-        .item-checked { text-decoration: line-through; color: #999; }
+        .item-checked { text-decoration: line-through; color: #999; background: #eee !important; }
+        .bottom-btn { width: 55px; height: 55px; border: 3px solid #333; border-radius: 50%; display: flex; items-center; justify-content: center; font-size: 22px; box-shadow: 4px 4px 0px #333; transition: 0.2s; }
+        .bottom-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px #333; }
     </style>
 </head>
-<body class="pb-24">
+<body class="pb-28">
 
     <div class="sticky top-0 bg-white border-b-4 border-[#333] z-50 p-4">
         <div class="flex overflow-x-auto gap-3 no-scrollbar py-2" id="day-selector"></div>
         <div class="mt-4 flex justify-between items-center px-2">
             <h1 class="text-xl font-black" id="display-date">DAY 1</h1>
-            <div id="weather-tag" class="bg-[var(--lemon)] border-2 border-[#333] px-3 py-1 rounded-full font-bold text-xs shadow-[2px_2px_0px_#333]">☀️ 12°C</div>
+            <div id="weather-tag" class="bg-[var(--lemon)] border-2 border-[#333] px-3 py-1 rounded-full font-bold text-xs">☀️ 12°C</div>
         </div>
     </div>
 
-    <div class="p-4" id="main-content">
-        <div id="timeline-container" class="relative"></div>
-        
-        <div class="mt-12 bg-white border-4 border-[#333] rounded-3xl p-6 shadow-[6px_6px_0px_var(--purple)]">
-            <h2 class="text-xl font-black mb-4 flex items-center" style="color: var(--orchid)">🧳 旅程行李必備清單</h2>
-            <div id="checklist" class="space-y-3 font-bold">
-                </div>
+    <div class="p-6">
+        <div class="timeline-container">
+            <div class="timeline-line"></div>
+            <div id="timeline-items" class="space-y-10"></div>
         </div>
     </div>
 
     <div class="fixed bottom-0 left-0 w-full bg-white border-t-4 border-[#333] p-4 flex justify-around items-center z-50">
-        <button onclick="window.scrollTo({top:0, behavior:'smooth'})" class="font-black text-gray-700">行程</button>
-        <button onclick="calculateRate()" class="w-14 h-14 bg-[var(--lemon)] border-4 border-[#333] rounded-full flex items-center justify-center text-2xl font-black shadow-[4px_4px_0px_#333]">¥</button>
-        <button onclick="toggleLedger()" class="w-14 h-14 bg-[var(--orchid)] border-4 border-[#333] rounded-full flex items-center justify-center text-2xl font-black shadow-[4px_4px_0px_#333]">💰</button>
+        <div class="flex flex-col items-center gap-1" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+            <div class="bottom-btn bg-white">🗓️</div>
+            <span class="text-[10px] font-black">行程</span>
+        </div>
+        <div class="flex flex-col items-center gap-1" onclick="calculateRate()">
+            <div class="bottom-btn bg-[var(--lemon)]">¥</div>
+            <span class="text-[10px] font-black">匯率</span>
+        </div>
+        <div class="flex flex-col items-center gap-1" onclick="openModal('ledger-modal')">
+            <div class="bottom-btn bg-[var(--orchid)] text-white">💰</div>
+            <span class="text-[10px] font-black">分帳</span>
+        </div>
+        <div class="flex flex-col items-center gap-1" onclick="openModal('pack-modal')">
+            <div class="bottom-btn bg-[var(--purple)] text-white">🧳</div>
+            <span class="text-[10px] font-black">行李</span>
+        </div>
     </div>
 
-    <div id="ledger-modal" onclick="if(event.target==this)toggleLedger()">
-        <div class="bg-white border-4 border-[#333] p-6 rounded-3xl w-[92%] max-w-md shadow-[8px_8px_0px_#333]">
-            <h2 class="text-xl font-black mb-4" style="color: var(--orchid)">💰 實名分帳系統</h2>
+    <div id="ledger-modal" class="modal" onclick="if(event.target==this)closeModal('ledger-modal')">
+        <div class="bg-white border-4 border-[#333] p-6 rounded-3xl w-[92%] max-w-md shadow-[8px_8px_0px_#333] max-h-[85vh] overflow-y-auto">
+            <h2 class="text-xl font-black mb-4 text-[var(--orchid)]">💰 實名分帳系統</h2>
+            <div id="total-summary" class="grid grid-cols-2 gap-2 mb-4 bg-gray-100 p-3 rounded-2xl border-2 border-gray-300 text-[11px] font-black">
+                <div>拉拉: <span id="sum-拉拉">0</span></div>
+                <div>芸婷: <span id="sum-芸婷">0</span></div>
+                <div>文錢: <span id="sum-文錢">0</span></div>
+                <div>依辰: <span id="sum-依辰">0</span></div>
+            </div>
             <input id="exp-amt" type="number" placeholder="日幣金額 JPY" class="w-full border-2 border-[#333] p-3 rounded-xl mb-4 font-bold">
-            <p class="font-black mb-3 text-xs text-gray-500">誰分錢？</p>
             <div class="grid grid-cols-2 gap-3 mb-6">
                 <input type="checkbox" id="m1" class="hidden member-cb" value="拉拉" checked><label for="m1" class="border-2 border-gray-100 p-2 rounded-xl text-center font-black cursor-pointer">拉拉</label>
                 <input type="checkbox" id="m2" class="hidden member-cb" value="芸婷" checked><label for="m2" class="border-2 border-gray-100 p-2 rounded-xl text-center font-black cursor-pointer">芸婷</label>
                 <input type="checkbox" id="m3" class="hidden member-cb" value="文錢" checked><label for="m3" class="border-2 border-gray-100 p-2 rounded-xl text-center font-black cursor-pointer">文錢</label>
                 <input type="checkbox" id="m4" class="hidden member-cb" value="依辰" checked><label for="m4" class="border-2 border-gray-100 p-2 rounded-xl text-center font-black cursor-pointer">依辰</label>
             </div>
-            <button onclick="saveExp()" class="w-full bg-[var(--lemon)] border-2 border-[#333] py-3 rounded-xl font-black">記錄支出</button>
-            <div id="exp-list" class="mt-6 max-h-40 overflow-y-auto border-t-2 border-dashed pt-4"></div>
+            <button onclick="saveExp()" class="w-full bg-[var(--lemon)] border-2 border-[#333] py-3 rounded-xl font-black shadow-[3px_3px_0px_#333]">紀錄並計算</button>
+            <div id="exp-list" class="mt-6 space-y-2"></div>
+        </div>
+    </div>
+
+    <div id="pack-modal" class="modal" onclick="if(event.target==this)closeModal('pack-modal')">
+        <div class="bg-white border-4 border-[#333] p-6 rounded-3xl w-[92%] max-w-md shadow-[8px_8px_0px_#333] max-h-[80vh] overflow-y-auto">
+            <h2 class="text-xl font-black mb-4 text-[var(--purple)]">🧳 行李清單</h2>
+            <div id="checklist" class="space-y-3 font-black"></div>
         </div>
     </div>
 
@@ -71,56 +102,54 @@
         const weatherData = { 1:"☀️ 12°C", 2:"☁️ 10°C", 3:"🌤️ 8°C", 4:"☀️ 11°C", 5:"🌧️ 9°C", 6:"🌤️ 12°C" };
         const travelData = {
             1: { date: "3/6 (五)", title: "抵達京都", items: [
-                { t: "07:00", l: "桃園機場 T1 集合", d: "航班 MM024 (09:40-13:10)", links: [{n: "✈️ MM024 動態", u: "https://www.trip.com/webapp/flight/schedule/detail.html?flightNo=MM024"}] },
-                { t: "14:44", l: "JR HARUKA", d: "16:04 抵達京都", links: [{n: "🛒 Klook 領券", u: "https://s.klook.com/c/my45rLeWwO"}] }
+                { t: "07:00", l: "桃園機場集合", d: "MM024 航班資訊隨身看", links: [{n: "✈️ 航班動態", u: "https://www.trip.com/webapp/flight/schedule/detail.html?flightNo=MM024"}] },
+                { t: "14:44", l: "JR HARUKA", d: "京都車站轉乘", links: [] }
             ]},
             2: { date: "3/7 (六)", title: "清水寺和服", items: [
-                { t: "09:00", l: "璃光和服 祇園店", d: "預約名單確認", links: [{n: "📍 地圖導航", u: "http://maps.google.com"}] },
-                { t: "16:00", l: "百貨逛街攻略", d: "Porta 貝果 / 永旺大創", links: [{n: "🏬 永旺百貨", u: "http://maps.google.com"}] }
+                { t: "09:00", l: "璃光和服", d: "穿上最美的和服", links: [{n: "📍 地圖", u: "http://maps.google.com"}] },
+                { t: "16:00", l: "四條河原町", d: "逛街採買", links: [] }
             ]},
             3: { date: "3/8 (日)", title: "天橋立一日遊", items: [
-                { t: "08:30", l: "京都站集合", d: "八條口 AVANTI 門口", links: [] },
-                { t: "10:30", l: "天橋立 View Land", d: "飛龍觀、特色吊椅", links: [] },
-                { t: "14:00", l: "伊根舟屋", d: "觀光船、餵海鷗", links: [] }
+                { t: "08:30", l: "京都站出發", d: "前往海之京都", links: [] },
+                { t: "11:00", l: "天橋立 View Land", d: "飛龍觀景觀", links: [] }
             ]},
             4: { date: "3/9 (一)", title: "環球 25週年", items: [
-                { t: "07:00", l: "抵達影城正門", d: "提早兩小時排隊", links: [] },
-                { t: "08:00", l: "入園搶券", d: "APP 領取任天堂整理券", links: [] },
-                { t: "13:00", l: "25週年特別遊行", d: "皮卡丘 NO LIMIT! Parade", links: [] },
-                { t: "15:00", l: "咒術迴戰 4D", d: "期間限定設施", links: [] },
-                { t: "19:00", l: "超級任天堂點燈", d: "必看夜晚版奇諾比奧", links: [] }
+                { t: "06:30", l: "影城大門集合", d: "提早卡位", links: [] },
+                { t: "13:00", l: "皮卡丘遊行", d: "NO LIMIT! 25週年限定", links: [] },
+                { t: "19:00", l: "任天堂世界夜景", d: "奇諾比奧點燈", links: [] }
             ]},
             5: { date: "3/10 (二)", title: "勝尾寺 & 大阪", items: [
-                { t: "10:00", l: "勝尾寺", d: "必買達摩御守", links: [] },
-                { t: "17:00", l: "新世界炸串", d: "大阪下町風情", links: [] }
+                { t: "10:00", l: "勝尾寺達摩", d: "祈求勝運", links: [] },
+                { t: "18:00", l: "難波心齋橋", d: "晚餐 & 藥妝", links: [] }
             ]},
             6: { date: "3/11 (三)", title: "回台", items: [
-                { t: "09:30", l: "關西機場 T1", d: "MM023 11:30起飛", links: [{n: "🛍️ 免稅店預訂", u: "https://www.kixdutyfree.jp/tw/"}] }
+                { t: "09:30", l: "關西機場 T1", d: "MM023 報到", links: [] }
             ]}
         };
 
-        const packingList = ["護照/簽證", "日幣/信用卡", "行動電源", "網卡/Wifi", "外套/輕便雨具", "個人藥品", "充電線", "環保袋"];
+        const packingItems = ["護照/簽證", "日幣現金", "信用卡", "行動電源", "網卡", "外套", "常備藥", "充電器"];
 
         function init() {
             const selector = document.getElementById('day-selector');
             for (let i = 1; i <= 6; i++) {
-                const day = travelData[i] || { date: `3/${5+i} (？)` };
+                const day = travelData[i];
                 const btn = document.createElement('button');
                 btn.className = `flex-shrink-0 w-20 h-24 flex flex-col items-center justify-center day-btn font-black`;
                 btn.id = `btn-day-${i}`;
                 btn.onclick = () => showDay(i);
-                btn.innerHTML = `<span class="text-[10px] text-gray-400">D${i}</span><span class="text-sm">${day.date.split(' ')[0]}</span><span class="text-xs text-orchid-500">${day.date.split(' ')[1]}</span>`;
+                btn.innerHTML = `<span class="text-[10px] text-gray-400">D${i}</span><span class="text-sm">${day.date.split(' ')[0]}</span><span class="text-xs text-orchid-500 font-black">${day.date.split(' ')[1]}</span>`;
                 selector.appendChild(btn);
             }
 
             const checkContainer = document.getElementById('checklist');
-            packingList.forEach((item, idx) => {
+            packingItems.forEach(item => {
                 checkContainer.innerHTML += `
-                    <div class="flex items-center gap-3 p-3 bg-[var(--petal)] rounded-xl border-2 border-[#333]" onclick="this.classList.toggle('item-checked')">
+                    <div class="flex items-center gap-3 p-4 bg-[var(--petal)] rounded-2xl border-2 border-[#333]" onclick="this.classList.toggle('item-checked')">
                         <input type="checkbox" class="w-5 h-5 accent-[var(--orchid)]"> <span>${item}</span>
                     </div>`;
             });
             showDay(1);
+            renderExp();
         }
 
         function showDay(dayNum) {
@@ -129,48 +158,51 @@
             document.getElementById('weather-tag').innerText = weatherData[dayNum] || "☀️ 12°C";
             const data = travelData[dayNum];
             document.getElementById('display-date').innerText = `DAY ${dayNum} ${data.title}`;
-            
-            const container = document.getElementById('timeline-container');
-            container.innerHTML = '<div class="timeline-line"></div>';
+            const container = document.getElementById('timeline-items');
+            container.innerHTML = '';
             data.items.forEach((item, idx) => {
-                const card = `
-                    <div class="flex gap-4 min-h-[80px]">
-                        <div class="timeline-area"><span class="time-tag shadow-[2px_2px_0px_#333]">${item.t}</span></div>
-                        <div class="neo-card flex-1 p-5" onclick="toggleD('d-${dayNum}-${idx}')">
-                            <h2 class="text-md font-black">${item.l}</h2>
+                container.innerHTML += `
+                    <div class="relative">
+                        <span class="time-tag">${item.t}</span>
+                        <div class="neo-card p-5 ml-2" onclick="toggleD('d-${dayNum}-${idx}')">
+                            <h2 class="text-lg font-black">${item.l}</h2>
                             <div id="d-${dayNum}-${idx}" class="hidden-detail mt-3 text-xs font-bold text-gray-500 border-t-2 border-dashed pt-3">
-                                <p>💡 ${item.d}</p>
+                                <p>📝 ${item.d}</p>
                                 ${item.links ? item.links.map(l => `<a href="${l.u}" target="_blank" class="nav-link" onclick="event.stopPropagation()">🔗 ${l.n}</a>`).join('') : ''}
                             </div>
                         </div>
                     </div>`;
-                container.innerHTML += card;
             });
         }
 
-        function toggleD(id) { 
-            const el = document.getElementById(id);
-            el.style.display = (el.style.display === 'block' ? 'none' : 'block');
-        }
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; if(id==='ledger-modal') renderExp(); }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        function toggleD(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block' ? 'none' : 'block'); }
 
-        function toggleLedger() { const m = document.getElementById('ledger-modal'); m.style.display = (m.style.display=='flex'?'none':'flex'); renderExp(); }
         function saveExp() {
-            const amt = document.getElementById('exp-amt').value;
-            const members = Array.from(document.querySelectorAll('.member-cb:checked')).map(cb => cb.value);
-            if(!amt || members.length === 0) return;
-            const list = JSON.parse(localStorage.getItem('jptrip_v5') || '[]');
-            list.push({ amt, m: members, per: Math.round(amt/members.length), t: new Date().toLocaleTimeString() });
-            localStorage.setItem('jptrip_v5', JSON.stringify(list));
+            const amt = parseInt(document.getElementById('exp-amt').value);
+            const m = Array.from(document.querySelectorAll('.member-cb:checked')).map(cb => cb.value);
+            if(!amt || m.length === 0) return;
+            const list = JSON.parse(localStorage.getItem('jptrip_final') || '[]');
+            const per = Math.round(amt / m.length);
+            list.push({ amt, m, per, time: new Date().toLocaleTimeString() });
+            localStorage.setItem('jptrip_final', JSON.stringify(list));
             document.getElementById('exp-amt').value = '';
             renderExp();
         }
+
         function renderExp() {
-            const list = JSON.parse(localStorage.getItem('jptrip_v5') || '[]');
-            document.getElementById('exp-list').innerHTML = list.reverse().slice(0,5).map(i => `
-                <div class="bg-gray-50 p-3 rounded-xl border-2 border-gray-200 mb-2 text-xs font-bold">
-                    ¥${i.amt} (${i.m.join(',')}) <span class="text-pink-500 ml-2">每人 ¥${i.per}</span>
+            const list = JSON.parse(localStorage.getItem('jptrip_final') || '[]');
+            const sums = { "拉拉": 0, "芸婷": 0, "文錢": 0, "依辰": 0 };
+            list.forEach(i => i.m.forEach(name => sums[name] += i.per));
+            for(let name in sums) { document.getElementById(`sum-${name}`).innerText = `¥${sums[name].toLocaleString()}`; }
+            
+            document.getElementById('exp-list').innerHTML = list.reverse().slice(0, 5).map(i => `
+                <div class="bg-gray-50 p-2 rounded-xl border-2 border-gray-200 text-[10px] font-bold">
+                    ¥${i.amt} (${i.m.join(',')}) <span class="text-pink-500">每人¥${i.per}</span>
                 </div>`).join('');
         }
+
         function calculateRate() { const j = prompt("日幣 (JPY):", "1000"); if(j) alert(`¥${j} ≈ $${Math.round(j*0.21)}`); }
         window.onload = init;
     </script>
