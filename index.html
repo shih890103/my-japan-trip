@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 JP Travel Final</title>
+    <title>2026 JP Travel Final Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root { 
@@ -18,7 +18,7 @@
         .day-label { font-size: 14px; font-weight: 900; }
         .date-label { font-size: 19px; font-weight: 900; }
 
-        /* 時間軸佈局優化：防止壓到方塊 */
+        /* 時間軸佈局：左側縱線與時間標籤 */
         .timeline-container { position: relative; padding-left: 95px; } 
         .timeline-line { position: absolute; left: 45px; top: 0; bottom: 0; width: 5px; background-color: var(--purple); z-index: 0; border-left: 2px solid #333; }
         
@@ -34,7 +34,6 @@
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100; align-items: center; justify-content: center; }
         .hidden-detail { display: none; }
         .bottom-btn { width: 58px; height: 58px; border: 3px solid #333; border-radius: 50%; display: flex; items-center; justify-content: center; font-size: 24px; box-shadow: 4px 4px 0px #333; }
-        .item-checked { text-decoration: line-through; opacity: 0.5; }
     </style>
 </head>
 <body class="pb-32">
@@ -43,7 +42,7 @@
         <div class="flex overflow-x-auto gap-4 no-scrollbar py-2" id="day-selector"></div>
         <div class="mt-4 flex justify-between items-center px-2">
             <h1 class="text-2xl font-black" id="display-date">DAY 1</h1>
-            <div id="weather-tag" class="bg-[var(--lemon)] border-2 border-[#333] px-3 py-1 rounded-full font-bold text-sm shadow-[2px_2px_0px_#333]">☀️ 12°C</div>
+            <div id="weather-tag" class="bg-[var(--lemon)] border-2 border-[#333] px-3 py-1 rounded-full font-bold text-sm">🌸 Spring 2026</div>
         </div>
     </div>
 
@@ -84,55 +83,56 @@
 
     <div id="pack-modal" class="modal" onclick="if(event.target==this)closeModal('pack-modal')">
         <div class="bg-white border-4 border-[#333] p-6 rounded-3xl w-[92%] max-w-md shadow-[8px_8px_0px_#333]">
-            <h2 class="text-xl font-black mb-4 text-[var(--purple)]">🧳 行李必備清單</h2>
+            <h2 class="text-xl font-black mb-4 text-[var(--purple)]">🧳 行李清單</h2>
             <div id="checklist" class="space-y-3 font-black"></div>
         </div>
     </div>
 
     <script>
-        const weatherData = { 1:"☀️ 12°C", 2:"☁️ 10°C", 3:"🌤️ 8°C", 4:"☀️ 11°C", 5:"🌧️ 9°C", 6:"🌤️ 12°C" };
         const travelData = {
             1: { date: "3/6 (五)", title: "抵達京都", items: [
-                { t: "07:00", l: "桃園機場 T1 集合", d: "MM024 航班報到", links: [{n: "✈️ 實時航班動態", u: "https://www.trip.com/webapp/flight/schedule/detail.html?flightNo=MM024"}] },
-                { t: "14:44", l: "🚄 JR HARUKA", d: "16:04 抵達京都站", links: [{n: "🛒 Klook 訂票", u: "https://s.klook.com/c/my45rLeWwO"}] },
-                { t: "16:15", l: "🏨 Check-in", d: "アルアホテル京都 (Ala Hotel)", links: [] },
-                { t: "16:45", l: "🛍️ 京都站周邊購物", d: "友都八喜 / 唐吉訶德", links: [] },
-                { t: "18:30", l: "🍚 晚餐選單", d: "燒肉弘 / 居酒屋 あいよっ / 拉麵小路", links: [{n: "🥩 燒肉弘 導航", u: "http://google.com"}] }
+                { t: "07:00", l: "桃園機場 T1 集合", d: "樂桃 MM024 航班報到", links: [{n: "✈️ 實時航班動態", u: "https://www.trip.com/webapp/flight/schedule/detail.html?flightNo=MM024"}] },
+                { t: "14:44", l: "🚄 JR HARUKA", d: "直達京都車站 (16:04 抵達)", links: [
+                    {n: "🛒 Klook 訂票($424)", u: "https://s.klook.com/c/my45rLeWwO"},
+                    {n: "🕒 官方時刻表", u: "https://www.westjr.co.jp/global/en/timetable/pdf/haruka_timetable.pdf"}
+                ]},
+                { t: "16:15", l: "🏨 Check-in", d: "アルアホテル京都 (Ala Hotel)", links: [{n: "📍 飯店地圖導航", u: "https://www.google.com/maps/search/?api=1&query=Ala+Hotel+Kyoto"}] },
+                { t: "18:30", l: "🍚 晚餐選單", d: "居酒屋/燒肉/拉麵", links: [
+                    {n: "🥩 京的燒肉處 弘", u: "https://www.google.com/maps/search/?api=1&query=京の焼肉処+弘+京都駅前店"},
+                    {n: "🍜 拉麵小路", u: "https://www.google.com/maps/search/?api=1&query=京都拉麵小路"}
+                ]}
             ]},
             2: { date: "3/7 (六)", title: "清水寺和服", items: [
-                { t: "09:00", l: "👘 璃光和服體驗", d: "祇園店 預約 09:00", links: [{n: "📍 璃光和服地圖", u: "http://google.com"}] },
-                { t: "10:00", l: "🏮 清水寺參拜", d: "三二年坂散策 (建議計程車上山)", links: [] },
-                { t: "13:30", l: "🍚 午餐：玄品ふぐ", d: "河豚料理體驗", links: [] },
-                { t: "16:00", l: "🛍️ 京都百貨大攻略", d: "永旺百貨 / Porta / 伊勢丹 / Avanti", links: [{n: "🏬 Porta 百貨攻略", u: "http://google.com"}] }
+                { t: "09:00", l: "👘 璃光和服體驗", d: "祇園店 預約 09:00", links: [{n: "📍 璃光和服地圖", u: "https://www.google.com/maps/search/?api=1&query=璃光和服+祇園店"}] },
+                { t: "10:00", l: "🏮 清水寺參拜", d: "三/二年坂散策 (建議計程車上山)", links: [] },
+                { t: "13:30", l: "🍚 午餐：玄品ふぐ", d: "河豚料理體驗", links: [{n: "🍴 玄品河豚 預約", u: "https://www.guenpin.com/"}] },
+                { t: "16:00", l: "🛍️ 京都百貨大攻略", d: "永旺/Porta/伊勢丹/Avanti", links: [{n: "🏬 京都 Porta 官網", u: "https://www.yodobashi.com/"}] }
             ]},
             3: { date: "3/8 (日)", title: "天橋立一日遊", items: [
-                { t: "08:30", l: "📍 京都站八條口集合", d: "集合地點：AVANTI 廣場前方", links: [] },
-                { t: "10:20", l: "🐉 天橋立 View Land", d: "飛龍觀、特色吊椅體驗", links: [] },
-                { t: "13:30", l: "🚢 伊根灣觀光船", d: "餵海鷗與老鷹、漫步舟屋群", links: [] },
-                { t: "18:30", l: "🏨 大阪飯店 Check-in", d: "東橫 INN 大阪難波", links: [] }
+                { t: "08:30", l: "📍 京都站八條口集合", d: "集合地點：AVANTI 廣場前方", links: [{n: "📍 集合點地圖", u: "https://www.google.com/maps/search/?api=1&query=Kyoto+Avanti"}] },
+                { t: "10:20", l: "🐉 天橋立 View Land", d: "飛龍觀、特色吊椅、單軌車", links: [{n: "🚠 View Land 官網", u: "https://www.amanohashidate.com/viewland/"}] },
+                { t: "13:30", l: "🚢 伊根灣觀光船", d: "餵海鷗、漫步舟屋群", links: [{n: "🚢 觀光船時刻表", u: "https://www.ine-kankou.jp/china-t"}] },
+                { t: "18:30", l: "🏨 大阪飯店 Check-in", d: "東橫 INN 大阪難波", links: [{n: "🦀 蟹道樂 預約", u: "https://douraku.co.jp/"}] }
             ]},
             4: { date: "3/9 (一)", title: "環球 25週年", items: [
-                { t: "07:00", l: "🎢 抵達影城正門", d: "建議提前2小時現場排隊", links: [] },
-                { t: "07:45", l: "🎟️ 入園搶券", d: "APP 領取任天堂世界整理券", links: [] },
-                { t: "08:00", l: "🦍 咚奇剛國度", d: "首衝「瘋狂礦車」", links: [] },
-                { t: "13:00", l: "⚡ 25週年特別遊行", d: "NO LIMIT! Parade (皮卡丘)", links: [] },
-                { t: "14:30", l: "🔮 Cool Japan", d: "咒術迴戰 4-D / 名偵探柯南", links: [] },
-                { t: "19:00", l: "🌟 二進任天堂世界", d: "觀看夜間點燈與買紀念品", links: [] }
+                { t: "07:30", l: "🎢 USJ 入園準備", d: "難波出發，建議提早排隊", links: [] },
+                { t: "08:15", l: "🎟️ 入園搶券", d: "APP 領取任天堂整理券", links: [{n: "📱 USJ App 下載", u: "https://www.usj.co.jp/web/ja/jp/enjoy/app"}] },
+                { t: "14:00", l: "⚡ 25週年大巡遊", d: "NO LIMIT! Parade (皮卡丘登場)", links: [] },
+                { t: "19:00", l: "🍚 晚餐：CityWalk", d: "推薦 Red Lobster 或 難波周邊", links: [] }
             ]},
             5: { date: "3/10 (二)", title: "勝尾寺 & 大阪城", items: [
-                { t: "09:30", l: "🔴 勝尾寺 (必拍達摩)", d: "祈求勝運，拍滿山遍野達摩偶", links: [] },
-                { t: "12:30", l: "🏯 大阪城公園", d: "天守閣拍照 / 護城河船", links: [] },
-                { t: "15:00", l: "🍳 千日前道具街", d: "質感餐具、食品模型", links: [] },
-                { t: "17:00", l: "🗼 通天閣 & 新世界", d: "TOWER SLIDER 溜滑梯 & 炸串晚餐", links: [] }
+                { t: "08:00", l: "🔴 出發 勝尾寺", d: "地鐵御堂筋線 ➔ 29號巴士", links: [{n: "🚌 29號巴士時刻", u: "https://www.hankyubus.co.jp/"}] },
+                { t: "12:30", l: "🏯 大阪城公園", d: "天守閣拍照 / 安宅丸船", links: [{n: "⛴️ 安宅丸預約", u: "https://www.suijo-bus.jp/"}] },
+                { t: "15:00", l: "🍳 千日前道具街", d: "地圖導航 (餐具、模型)", links: [{n: "📍 道具街導航", u: "https://www.google.com/maps/search/?api=1&query=千日前道具屋筋商店街"}] },
+                { t: "17:00", l: "🗼 通天閣 + 新世界", d: "TOWER SLIDER 溜滑梯體驗", links: [] }
             ]},
             6: { date: "3/11 (三)", title: "準備回台", items: [
-                { t: "08:00", l: "🚄 南海電鐵 Rapi:t", d: "前往關西機場 T1", links: [] },
-                { t: "09:00", l: "🛫 機場報到", d: "免稅店最後補貨", links: [] },
-                { t: "11:30", l: "✈️ MM023 起飛", d: "預計 13:50 抵達台灣", links: [] }
+                { t: "08:00", l: "🚄 南海電鐵 Rapi:t", d: "前往關西機場 T1", links: [{n: "🎫 Rapi:t 訂票", u: "https://www.howto-osaka.com/tc/rapit/"}] },
+                { t: "11:30", l: "✈️ MM023 起飛", d: "13:50 抵達桃園 T1", links: [{n: "✈️ 回程航班動態", u: "https://www.trip.com/webapp/flight/schedule/detail.html?flightNo=MM023"}] }
             ]}
         };
 
-        const packingItems = ["護照", "日幣", "行動電源", "網卡", "外套", "常備藥", "充電器", "環保袋"];
+        const packingItems = ["護照", "日幣現金", "行動電源", "網卡", "外套", "常備藥", "充電器", "環保袋"];
 
         function init() {
             const selector = document.getElementById('day-selector');
@@ -145,7 +145,7 @@
                 </button>`;
             }
             const check = document.getElementById('checklist');
-            packingItems.forEach(it => check.innerHTML += `<div class="p-4 bg-[var(--petal)] rounded-2xl border-2 border-[#333] mb-2" onclick="this.classList.toggle('item-checked')">⬜ ${it}</div>`);
+            packingItems.forEach(it => check.innerHTML += `<div class="p-4 bg-[var(--petal)] rounded-2xl border-2 border-[#333] mb-2" onclick="this.classList.toggle('opacity-50')">⬜ ${it}</div>`);
             showDay(1);
             renderExp();
         }
@@ -153,7 +153,6 @@
         function showDay(dayNum) {
             document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('day-btn-active'));
             document.getElementById(`btn-day-${dayNum}`).classList.add('day-btn-active');
-            document.getElementById('weather-tag').innerText = weatherData[dayNum] || "☀️ 12°C";
             document.getElementById('display-date').innerText = `DAY ${dayNum} ${travelData[dayNum].title}`;
             const container = document.getElementById('timeline-items');
             container.innerHTML = '';
@@ -179,15 +178,15 @@
             const amt = parseInt(document.getElementById('exp-amt').value);
             const m = Array.from(document.querySelectorAll('#ledger-modal input:checked')).map(cb => cb.value);
             if(!amt || m.length === 0) return;
-            const list = JSON.parse(localStorage.getItem('jptrip_final_v2') || '[]');
+            const list = JSON.parse(localStorage.getItem('jptrip_v3') || '[]');
             list.push({ amt, m, per: Math.round(amt/m.length), t: new Date().toLocaleTimeString() });
-            localStorage.setItem('jptrip_final_v2', JSON.stringify(list));
+            localStorage.setItem('jptrip_v3', JSON.stringify(list));
             document.getElementById('exp-amt').value = '';
             renderExp();
         }
 
         function renderExp() {
-            const list = JSON.parse(localStorage.getItem('jptrip_final_v2') || '[]');
+            const list = JSON.parse(localStorage.getItem('jptrip_v3') || '[]');
             const sums = { "拉拉": 0, "芸婷": 0, "文錢": 0, "依辰": 0 };
             list.forEach(i => i.m.forEach(name => sums[name] += i.per));
             for(let name in sums) document.getElementById(`sum-${name}`).innerText = `¥${sums[name].toLocaleString()}`;
