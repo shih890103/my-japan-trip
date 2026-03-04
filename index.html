@@ -7,30 +7,34 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background-color: #FFF9F1; font-family: -apple-system, "Noto Sans TC", sans-serif; }
-        .neo-card { border: 3px solid #333; box-shadow: 6px 6px 0px #FFD1DC; background: white; border-radius: 15px; overflow: hidden; margin-bottom: 20px; transition: 0.2s; }
-        .neo-card:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px #FFD1DC; }
-        .day-btn-active { background-color: #FFD1DC !important; color: #333 !important; border-color: #333 !important; }
-        .time-tag { background: #FFFACD; color: #333; padding: 2px 8px; border: 2px solid #333; font-weight: 900; border-radius: 8px; margin-right: 8px; font-size: 14px; }
-        .nav-link { background: #FFFACD; color: #333; padding: 10px; border-radius: 12px; font-weight: 900; text-align: center; display: block; margin-top: 10px; border: 2px solid #FFD1DC; font-size: 13px; }
+        /* 使用指定色號 #F2CFD7 做為陰影 */
+        .neo-card { border: 3px solid #333; box-shadow: 6px 6px 0px #F2CFD7; background: white; border-radius: 15px; overflow: hidden; margin-bottom: 20px; transition: 0.2s; }
+        .neo-card:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px #F2CFD7; }
+        /* 使用指定色號 #F2CFD7 做為活動按鈕色 */
+        .day-btn-active { background-color: #F2CFD7 !important; color: #333 !important; border-color: #333 !important; }
+        /* 使用指定色號 #D1D171 做為時間標籤 */
+        .time-tag { background: #D1D171; color: #333; padding: 2px 8px; border: 2px solid #333; font-weight: 900; border-radius: 8px; margin-right: 8px; font-size: 14px; }
+        /* 使用指定色號 #FEE088 做為按鈕連結色 */
+        .nav-link { background: #FEE088; color: #333; padding: 10px; border-radius: 12px; font-weight: 900; text-align: center; display: block; margin-top: 10px; border: 2px solid #D6E6E5; font-size: 13px; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body class="pb-24">
 
-    <div class="sticky top-0 bg-white border-b-4 border-pink-200 z-50 p-4">
+    <div class="sticky top-0 bg-white border-b-4 border-[#D6E6E5] z-50 p-4">
         <div class="flex overflow-x-auto gap-3 no-scrollbar py-2" id="day-selector"></div>
         <div class="mt-4 flex justify-between items-center">
             <h1 class="text-2xl font-black text-gray-800" id="display-date">3/6 DAY 1</h1>
-            <div class="bg-[#FFFACD] border-2 border-pink-300 px-3 py-1 rounded-full font-bold text-xs text-gray-700 italic">2026 JP TRIP 🌸</div>
+            <div class="bg-[#FEE088] border-2 border-[#F2CFD7] px-3 py-1 rounded-full font-bold text-xs text-gray-700 italic">Spring 2026 🌸</div>
         </div>
     </div>
 
     <div class="p-5 space-y-4" id="timeline-container"></div>
 
-    <div class="fixed bottom-0 left-0 w-full bg-white border-t-4 border-pink-100 p-4 flex justify-around items-center z-50 shadow-lg">
-        <button class="font-black text-pink-500">行程</button>
-        <button onclick="calculateRate()" class="w-14 h-14 bg-[#FFFACD] border-4 border-pink-200 text-gray-700 rounded-full flex items-center justify-center text-2xl font-black shadow-md">¥</button>
-        <button onclick="window.open('https://www.trip.com/webapp/flight/schedule/detail.html?flightNo=MM024')" class="font-black text-gray-500">航班</button>
+    <div class="fixed bottom-0 left-0 w-full bg-white border-t-4 border-[#D6E6E5] p-4 flex justify-around items-center z-50 shadow-lg">
+        <button class="font-black text-[#F2CFD7] text-lg">行程</button>
+        <button onclick="calculateRate()" class="w-14 h-14 bg-[#FEE088] border-4 border-[#D1D171] text-gray-700 rounded-full flex items-center justify-center text-2xl font-black shadow-md">¥</button>
+        <button onclick="window.open('https://www.trip.com/webapp/flight/schedule/detail.html?flightNo=MM024')" class="font-black text-gray-400">航班</button>
     </div>
 
     <script>
@@ -46,13 +50,13 @@
                         {n: "🛒 Klook 訂購 ($424)", u: "https://s.klook.com/c/my45rLeWwO"}
                     ]},
                     { t: "16:15", l: "飯店：アルアホテル京都", d: "〒600-8212 京都府京都市下京区", links: [{n: "📍 飯店 Google Map", u: "https://maps.app.goo.gl/hKgoxeqYYKi1teVP8?g_st=ipc"}] },
-                    { t: "16:45", l: "1. 晚餐甲奔選項 (點擊展開)", d: "點擊下方按鈕進行導航", links: [
+                    { t: "16:45", l: "1. 晚餐甲奔選項", d: "包含居酒屋、燒肉、拉麵", links: [
                         {n: "🍴 1. 居酒屋 あいよっ！", u: "https://maps.app.goo.gl/XcFtM5yFko9aanUd6?g_st=ipc"},
                         {n: "🥩 2. 京的燒肉處 弘", u: "https://maps.app.goo.gl/htujbBKAAdkCHFDt8?g_st=ipc"},
                         {n: "🍜 3. 拉麵小路", u: "https://maps.app.goo.gl/FGw9BVes7NiHvedF6?g_st=ipc"},
                         {n: "🥢 4. 拉麵 Kitada", u: "https://maps.app.goo.gl/Wa2wSsbMJ3FyQmHw9?g_st=ipc"}
                     ]},
-                    { t: "18:30", l: "2. 百貨購物攻略", d: "友都八喜 / 唐吉訶德", links: [
+                    { t: "18:30", l: "2. 百貨購物攻略", d: "友都八喜 / 唐吉軻德", links: [
                         {n: "🛍️ 友都八喜 (GU/UNIQLO)", u: "https://maps.app.goo.gl/hNW5jonrJnpq5gyz8?g_st=ipc"},
                         {n: "🐧 唐吉訶德京都站前", u: "https://maps.app.goo.gl/STJxYdMZazjpKscb7?g_st=com.google.maps.preview.copy"}
                     ]}
@@ -63,9 +67,9 @@
                 items: [
                     { t: "08:30", l: "Ala 飯店出發", d: "公車 86/206 烏丸七条-東山安井", links: [] },
                     { t: "09:00", l: "璃光和服 祇園店", d: "和服預約/租借", links: [{n: "📍 璃光和服地圖", u: "https://maps.app.goo.gl/D5QwiTvcQ6ojXG227?g_st=ipc"}] },
-                    { t: "10:00", l: "清水寺 / 三二年坂", d: "13:00 還和服", links: [] },
+                    { t: "10:00", l: "清水寺 / 三二年坂", d: "13:00 前還和服", links: [] },
                     { t: "13:30", l: "午餐：玄品ふぐ", d: "高級河豚料理體驗", links: [] },
-                    { t: "16:00", l: "京都百貨逛街選項 (點擊展開)", d: "百貨與特色店鋪導航", links: [
+                    { t: "16:00", l: "京都百貨逛街選項", d: "永旺/Porta/伊勢丹/Avanti", links: [
                         {n: "🏬 1. 永旺百貨 (大創/UNIQLO)", u: "https://maps.app.goo.gl/XLuaWAbnVcCAa4UN6?g_st=ipc"},
                         {n: "🏬 2. 京都 Porta (3coins/貝果)", u: "https://maps.app.goo.gl/RomrA1h6zyL7KHBb8?g_st=ipc"},
                         {n: "🏬 3. 伊勢丹百貨 (拉麵小路)", u: "https://maps.app.goo.gl/qAMTkVmdBczn5Wu8A?g_st=ipc"},
@@ -83,17 +87,26 @@
                 ]
             },
             4: {
-                date: "3/9 (一)", title: "環球影城 USJ",
+                date: "3/9 (一)", title: "環球影城 25週年特別版",
                 items: [
-                    { t: "08:15", l: "USJ 入園", d: "手機 APP 搶任天堂整理券", links: [] },
-                    { t: "19:00", l: "難波周邊 / 戎橋筋", d: "晚餐及藥妝補貨", links: [] }
+                    { t: "07:00", l: "抵達影城大門口", d: "預期人潮眾多，建議提早排隊", links: [] },
+                    { t: "07:45", l: "入園搶券", d: "立刻打開 App 領取「超級任天堂世界」整理券", links: [] },
+                    { t: "08:00", l: "首衝新設施", d: "咚奇剛國度「瘋狂礦車」或「瑪利歐賽車」", links: [] },
+                    { t: "10:00", l: "25週年拍照", d: "尋找園區內慶祝地標或限定裝飾", links: [] },
+                    { t: "11:30", l: "早午餐時間", d: "小小兵樂園或 Cool Japan 聯名餐廳", links: [] },
+                    { t: "13:00", l: "25週年特別遊行", d: "觀賞全新「NO LIMIT! Parade」(25隻皮卡丘！)", links: [] },
+                    { t: "14:30", l: "Cool Japan 活動", d: "咒術迴戰 4-D 或 名偵探柯南系列", links: [] },
+                    { t: "16:30", l: "水世界 (WaterWorld)", d: "觀賞精彩的戶外水上特技秀", links: [] },
+                    { t: "18:00", l: "二進任天堂/哈利波特", d: "體驗點燈氛圍並購買紀念品", links: [] },
+                    { t: "20:00", l: "最後衝刺", d: "飛天翼龍或好萊塢美夢", links: [] },
+                    { t: "21:00", l: "滿足離開", d: "影城正式閉園", links: [] }
                 ]
             },
             5: {
                 date: "3/10 (二)", title: "勝尾寺 & 大阪市",
                 items: [
                     { t: "09:30", l: "勝尾寺 (必拍達摩)", d: "地鐵+巴士前往勝運聖地", links: [] },
-                    { t: "15:00", l: "千日前道具街", d: "買餐具與模型", links: [] },
+                    { t: "15:00", l: "千日前道具街", d: "買質感餐具與食品模型", links: [] },
                     { t: "17:00", l: "通天閣 & 新世界", d: "晚餐吃炸串、逛唐吉", links: [{n: "🐧 難波唐吉導航", u: "https://maps.app.goo.gl/PF3oZn5uV96eT9aJ6?g_st=ipc"}] }
                 ]
             },
@@ -101,7 +114,7 @@
                 date: "3/11 (三)", title: "準備回台",
                 items: [
                     { t: "08:00", l: "南海難波站", d: "搭乘南海電鐵 Rapi:t", links: [] },
-                    { t: "11:30", l: "關西機場 T1 🛫", d: "起飛 MM023 返台", links: [] }
+                    { t: "11:30", l: "關西機場 T1 🛫", d: "MM023 起飛返台", links: [] }
                 ]
             }
         };
@@ -113,7 +126,7 @@
                 btn.className = `flex-shrink-0 w-20 h-24 border-3 border-gray-800 flex flex-col items-center justify-center bg-white rounded-2xl day-btn shadow-sm`;
                 btn.id = `btn-day-${i}`;
                 btn.onclick = () => showDay(i);
-                btn.innerHTML = `<span class="text-[10px] font-black uppercase text-gray-500">DAY ${i}</span><span class="text-lg font-black italic">03/${5+i}</span>`;
+                btn.innerHTML = `<span class="text-[10px] font-black uppercase text-gray-400">DAY ${i}</span><span class="text-lg font-black italic">03/${5+i}</span>`;
                 selector.appendChild(btn);
             }
             showDay(1);
@@ -135,8 +148,8 @@
                                 ${item.l}
                             </h2>
                             <p class="text-xs font-bold text-gray-400 mt-2 ml-1">✦ ${item.d}</p>
-                            <div id="d-${dayNum}-${idx}" class="${item.links.length > 0 ? '' : 'hidden'} mt-4 pt-4 border-t-2 border-dashed border-gray-100">
-                                ${item.links.length > 0 ? item.links.map(l => `<a href="${l.u}" target="_blank" class="nav-link" onclick="event.stopPropagation()">🔗 ${l.n}</a>`).join('') : '<p class="text-[10px] text-gray-300 italic text-center">無外部連結</p>'}
+                            <div id="d-${dayNum}-${idx}" class="${item.links && item.links.length > 0 ? '' : 'hidden'} mt-4 pt-4 border-t-2 border-dashed border-gray-100">
+                                ${item.links && item.links.length > 0 ? item.links.map(l => `<a href="${l.u}" target="_blank" class="nav-link" onclick="event.stopPropagation()">🔗 ${l.n}</a>`).join('') : '<p class="text-[10px] text-gray-300 italic text-center">點擊查看詳情</p>'}
                             </div>
                         </div>
                     </div>
