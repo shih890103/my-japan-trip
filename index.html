@@ -3,59 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JP Travel 2026</title>
+    <title>JP Travel 2026 - Smart Timeline</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #E5E5E5; font-family: sans-serif; }
-        .neo-card { background: white; border: 4px solid black; box-shadow: 8px 8px 0px black; margin-bottom: 20px; padding: 16px; transition: 0.2s; }
-        .neo-card:active { transform: translate(2px, 2px); box-shadow: 4px 4px 0px black; }
-        .orange-tag { background: #FF6B00; color: black; font-weight: 900; padding: 2px 8px; border: 2px solid black; display: inline-block; }
-        .btn-black { background: black; color: white; font-weight: 900; padding: 10px; border: 2px solid black; width: 100%; text-align: center; display: block; margin-top: 10px; }
+        body { background-color: #F3F4F6; font-family: -apple-system, sans-serif; }
+        .neo-brutal { border: 3px solid black; box-shadow: 5px 5px 0px black; transition: 0.2s; }
+        .neo-brutal:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px black; }
+        /* 隱藏捲軸但保留功能 */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="p-4 pb-24">
-    <h1 class="text-4xl font-black italic mb-6 border-b-4 border-black pb-2 uppercase tracking-tighter">JP Travel 2026</h1>
+<body class="pb-20">
 
-    <div id="timeline-section">
-        <div class="neo-card">
-            <span class="orange-tag">3/6 DAY 1</span>
-            <h3 class="font-black text-xl mt-2">✈️ 桃園 T1 ➔ 關西 T2</h3>
-            <p class="font-bold text-gray-600">13:10 抵達 / 14:44 HARUKA</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=京都ALA飯店" target="_blank" class="btn-black">前往 ALA 飯店導航</a>
-        </div>
-
-        <div class="neo-card">
-            <span class="orange-tag">3/7 DAY 2</span>
-            <h3 class="font-black text-xl mt-2">👘 璃光和服 / 清水寺</h3>
-            <a href="https://www.google.com/maps/search/?api=1&query=清水寺" target="_blank" class="btn-black">前往清水寺導航</a>
-        </div>
-
-        <div class="neo-card bg-black text-white">
-            <span class="orange-tag">3/10 DAY 5</span>
-            <h3 class="font-black text-xl mt-2 text-white">🔴 勝尾寺 (必看達摩)</h3>
-            <a href="https://www.google.com/maps/search/?api=1&query=勝尾寺" target="_blank" class="btn-black border-white">地圖導航</a>
+    <div class="sticky top-0 bg-white border-b-4 border-black z-50 p-4">
+        <div class="flex overflow-x-auto gap-3 no-scrollbar py-2">
+            <button onclick="showDay(1)" class="flex-shrink-0 w-20 h-24 border-4 border-black flex flex-col items-center justify-center bg-black text-white rounded-xl">
+                <span class="text-xs">DAY 1</span>
+                <span class="text-lg font-black">03/06</span>
+            </button>
+            <button onclick="showDay(2)" class="flex-shrink-0 w-20 h-24 border-4 border-black flex flex-col items-center justify-center bg-white text-black rounded-xl hover:bg-orange-500">
+                <span class="text-xs">DAY 2</span>
+                <span class="text-lg font-black">03/07</span>
+            </button>
+            <button onclick="showDay(3)" class="flex-shrink-0 w-20 h-24 border-4 border-black flex flex-col items-center justify-center bg-white text-black rounded-xl">
+                <span class="text-xs">DAY 3</span>
+                <span class="text-lg font-black">03/08</span>
+            </button>
+            </div>
+        <div class="mt-4 flex justify-between items-center">
+            <h1 class="text-2xl font-black italic uppercase" id="current-day-title">3/6 京都抵達</h1>
+            <div class="bg-orange-500 border-2 border-black px-2 font-bold italic">18°C ☀️</div>
         </div>
     </div>
 
-    <button onclick="calculateRate()" class="fixed right-4 bottom-24 w-16 h-16 bg-[#FF6B00] border-4 border-black shadow-[4px_4px_0px_black] rounded-full font-black text-2xl z-50 active:shadow-none active:translate-x-1">¥</button>
+    <div class="p-6 space-y-8 relative">
+        <div class="absolute left-10 top-0 bottom-0 w-1 bg-gray-300 -z-10"></div>
 
-    <nav class="fixed bottom-0 left-0 w-full bg-white border-t-4 border-black p-4 flex justify-around z-50">
-        <button onclick="alert('顯示行程')" class="font-black text-[#FF6B00]">行程</button>
-        <button onclick="openCalc()" class="font-black">記帳</button>
-        <button onclick="alert('顯示行李清單')" class="font-black">清單</button>
-    </nav>
+        <div class="relative pl-12">
+            <div class="absolute left-2 top-0 w-6 h-6 bg-green-500 border-4 border-black rounded-full z-10"></div>
+            <div class="bg-white neo-brutal rounded-2xl overflow-hidden" onclick="toggleDetail('detail1')">
+                <div class="border-l-[12px] border-green-500 p-4">
+                    <span class="text-xs font-bold text-gray-500 uppercase">早上</span>
+                    <h2 class="text-xl font-black flex justify-between items-center">
+                        ✈️ 桃園機場 T1
+                        <span class="text-sm bg-black text-white px-2 uppercase">09:40</span>
+                    </h2>
+                    <p class="text-sm font-bold text-gray-400 mt-1 italic">報到與登機</p>
+                    
+                    <div id="detail1" class="hidden mt-4 pt-4 border-t-2 border-dashed border-gray-200">
+                        <div class="bg-gray-50 p-3 border-2 border-black rounded-lg text-sm font-mono">
+                            航班：GK50 航廈：T1<br>
+                            備註：提早 2 小時抵達，記得拿網卡
+                        </div>
+                        <a href="#" class="block mt-3 bg-blue-500 text-white text-center py-2 font-black border-2 border-black shadow-[2px_2px_0px_black]">地圖導航</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="relative pl-12">
+            <div class="absolute left-2 top-0 w-6 h-6 bg-blue-500 border-4 border-black rounded-full z-10"></div>
+            <div class="bg-white neo-brutal rounded-2xl overflow-hidden" onclick="toggleDetail('detail2')">
+                <div class="border-l-[12px] border-blue-500 p-4">
+                    <span class="text-xs font-bold text-gray-500 uppercase">下午</span>
+                    <h2 class="text-xl font-black flex justify-between items-center">
+                        🚄 JR HARUKA
+                        <span class="text-sm bg-black text-white px-2 uppercase">14:44</span>
+                    </h2>
+                    <p class="text-sm font-bold text-gray-400 mt-1 italic">關西機場 ➔ 京都</p>
+                    
+                    <div id="detail2" class="hidden mt-4 pt-4 border-t-2 border-dashed border-gray-200">
+                        <div class="bg-yellow-50 p-3 border-2 border-black rounded-lg text-sm">
+                            ⚠️ Klook 票券尚未購買<br>
+                            出站口：JR 地下東口
+                        </div>
+                        <a href="https://s.klook.com/..." class="block mt-3 bg-orange-500 text-black text-center py-2 font-black border-2 border-black shadow-[2px_2px_0px_black]">前往 Klook 訂購</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="relative pl-12">
+            <div class="absolute left-2 top-0 w-6 h-6 bg-purple-500 border-4 border-black rounded-full z-10"></div>
+            <div class="bg-white neo-brutal rounded-2xl overflow-hidden" onclick="toggleDetail('detail3')">
+                <div class="border-l-[12px] border-purple-500 p-4">
+                    <span class="text-xs font-bold text-gray-500 uppercase">入住</span>
+                    <h2 class="text-xl font-black italic">🏨 アルアホテル京都</h2>
+                    <p class="text-sm font-bold text-gray-400 mt-1 italic">ALA HOTEL KYOTO</p>
+                    
+                    <div id="detail3" class="hidden mt-4 pt-4 border-t-2 border-dashed border-gray-200">
+                        <p class="text-sm leading-relaxed">〒600-8212 京都府京都市下京区東洞院通七条下る塩小路町518</p>
+                        <button class="w-full mt-3 border-2 border-black py-2 font-black">顯示訂房代號</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="fixed bottom-0 left-0 w-full bg-white border-t-4 border-black p-4 flex justify-around items-center z-50">
+        <button class="font-black text-orange-600">行程</button>
+        <button class="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center text-xl">¥</button>
+        <button class="font-black">記帳</button>
+    </div>
 
     <script>
-        function calculateRate() {
-            const jpy = prompt("請輸入日幣金額 (JPY):", "1000");
-            if (jpy) {
-                const twd = Math.round(jpy * 0.21);
-                alert("日幣 ¥" + jpy + " 約等於 台幣 $" + twd);
+        // 切換詳細資訊顯示
+        function toggleDetail(id) {
+            const detail = document.getElementById(id);
+            if (detail.classList.contains('hidden')) {
+                detail.classList.remove('hidden');
+            } else {
+                detail.classList.add('hidden');
             }
         }
-        function openCalc() {
-            alert("匯率計算機開啟中...目前匯率 0.21");
+
+        // 切換天數標題 (示範用)
+        function showDay(dayNum) {
+            const titles = {
+                1: "3/6 京都抵達",
+                2: "3/7 清水寺巡禮",
+                3: "3/8 奈良一日遊"
+            };
+            document.getElementById('current-day-title').innerText = titles[dayNum];
+            alert("正在切換至 Day " + dayNum + " 的行程...");
         }
     </script>
 </body>
