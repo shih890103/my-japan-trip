@@ -3,153 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JP Travel 2026</title>
+    <title>JP Travel 2026 - Smart Timeline</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #F3F4F6; font-family: -apple-system, "Noto Sans TC", sans-serif; }
-        .neo-brutal { border: 3px solid black; box-shadow: 5px 5px 0px black; transition: 0.1s; }
+        body { background-color: #F3F4F6; font-family: -apple-system, sans-serif; }
+        .neo-brutal { border: 3px solid black; box-shadow: 5px 5px 0px black; transition: 0.2s; }
         .neo-brutal:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px black; }
-        .day-btn-active { background-color: black !important; color: white !important; }
+        /* 隱藏捲軸但保留功能 */
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="pb-24">
+<body class="pb-20">
 
     <div class="sticky top-0 bg-white border-b-4 border-black z-50 p-4">
-        <div class="flex overflow-x-auto gap-3 no-scrollbar py-2" id="day-selector">
+        <div class="flex overflow-x-auto gap-3 no-scrollbar py-2">
+            <button onclick="showDay(1)" class="flex-shrink-0 w-20 h-24 border-4 border-black flex flex-col items-center justify-center bg-black text-white rounded-xl">
+                <span class="text-xs">DAY 1</span>
+                <span class="text-lg font-black">03/06</span>
+            </button>
+            <button onclick="showDay(2)" class="flex-shrink-0 w-20 h-24 border-4 border-black flex flex-col items-center justify-center bg-white text-black rounded-xl hover:bg-orange-500">
+                <span class="text-xs">DAY 2</span>
+                <span class="text-lg font-black">03/07</span>
+            </button>
+            <button onclick="showDay(3)" class="flex-shrink-0 w-20 h-24 border-4 border-black flex flex-col items-center justify-center bg-white text-black rounded-xl">
+                <span class="text-xs">DAY 3</span>
+                <span class="text-lg font-black">03/08</span>
+            </button>
             </div>
         <div class="mt-4 flex justify-between items-center">
-            <h1 class="text-2xl font-black italic" id="display-date">3/6 DAY 1</h1>
-            <div class="bg-orange-500 border-2 border-black px-2 font-bold italic" id="weather-box">12°C ☀️</div>
+            <h1 class="text-2xl font-black italic uppercase" id="current-day-title">3/6 京都抵達</h1>
+            <div class="bg-orange-500 border-2 border-black px-2 font-bold italic">18°C ☀️</div>
         </div>
     </div>
 
-    <div class="p-6 space-y-6 relative" id="timeline-container">
+    <div class="p-6 space-y-8 relative">
+        <div class="absolute left-10 top-0 bottom-0 w-1 bg-gray-300 -z-10"></div>
+
+        <div class="relative pl-12">
+            <div class="absolute left-2 top-0 w-6 h-6 bg-green-500 border-4 border-black rounded-full z-10"></div>
+            <div class="bg-white neo-brutal rounded-2xl overflow-hidden" onclick="toggleDetail('detail1')">
+                <div class="border-l-[12px] border-green-500 p-4">
+                    <span class="text-xs font-bold text-gray-500 uppercase">早上</span>
+                    <h2 class="text-xl font-black flex justify-between items-center">
+                        ✈️ 桃園機場 T1
+                        <span class="text-sm bg-black text-white px-2 uppercase">09:40</span>
+                    </h2>
+                    <p class="text-sm font-bold text-gray-400 mt-1 italic">報到與登機</p>
+                    
+                    <div id="detail1" class="hidden mt-4 pt-4 border-t-2 border-dashed border-gray-200">
+                        <div class="bg-gray-50 p-3 border-2 border-black rounded-lg text-sm font-mono">
+                            航班：GK50 航廈：T1<br>
+                            備註：提早 2 小時抵達，記得拿網卡
+                        </div>
+                        <a href="#" class="block mt-3 bg-blue-500 text-white text-center py-2 font-black border-2 border-black shadow-[2px_2px_0px_black]">地圖導航</a>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <div class="relative pl-12">
+            <div class="absolute left-2 top-0 w-6 h-6 bg-blue-500 border-4 border-black rounded-full z-10"></div>
+            <div class="bg-white neo-brutal rounded-2xl overflow-hidden" onclick="toggleDetail('detail2')">
+                <div class="border-l-[12px] border-blue-500 p-4">
+                    <span class="text-xs font-bold text-gray-500 uppercase">下午</span>
+                    <h2 class="text-xl font-black flex justify-between items-center">
+                        🚄 JR HARUKA
+                        <span class="text-sm bg-black text-white px-2 uppercase">14:44</span>
+                    </h2>
+                    <p class="text-sm font-bold text-gray-400 mt-1 italic">關西機場 ➔ 京都</p>
+                    
+                    <div id="detail2" class="hidden mt-4 pt-4 border-t-2 border-dashed border-gray-200">
+                        <div class="bg-yellow-50 p-3 border-2 border-black rounded-lg text-sm">
+                            ⚠️ Klook 票券尚未購買<br>
+                            出站口：JR 地下東口
+                        </div>
+                        <a href="https://s.klook.com/..." class="block mt-3 bg-orange-500 text-black text-center py-2 font-black border-2 border-black shadow-[2px_2px_0px_black]">前往 Klook 訂購</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="relative pl-12">
+            <div class="absolute left-2 top-0 w-6 h-6 bg-purple-500 border-4 border-black rounded-full z-10"></div>
+            <div class="bg-white neo-brutal rounded-2xl overflow-hidden" onclick="toggleDetail('detail3')">
+                <div class="border-l-[12px] border-purple-500 p-4">
+                    <span class="text-xs font-bold text-gray-500 uppercase">入住</span>
+                    <h2 class="text-xl font-black italic">🏨 アルアホテル京都</h2>
+                    <p class="text-sm font-bold text-gray-400 mt-1 italic">ALA HOTEL KYOTO</p>
+                    
+                    <div id="detail3" class="hidden mt-4 pt-4 border-t-2 border-dashed border-gray-200">
+                        <p class="text-sm leading-relaxed">〒600-8212 京都府京都市下京区東洞院通七条下る塩小路町518</p>
+                        <button class="w-full mt-3 border-2 border-black py-2 font-black">顯示訂房代號</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="fixed bottom-0 left-0 w-full bg-white border-t-4 border-black p-4 flex justify-around items-center z-50">
         <button class="font-black text-orange-600">行程</button>
-        <button onclick="calculateRate()" class="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center text-xl neo-brutal">¥</button>
-        <button class="font-black">清單</button>
+        <button class="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center text-xl">¥</button>
+        <button class="font-black">記帳</button>
     </div>
 
     <script>
-        // 完整的行程資料庫
-        const travelData = {
-            1: {
-                date: "3/6 (五)", title: "抵達京都", weather: "12°C ☀️",
-                items: [
-                    { time: "13:10", loc: "關西機場 T2", desc: "抵達大阪", detail: "搭接駁車至 T1 轉乘 JR", type: "transport" },
-                    { time: "14:44", loc: "JR HARUKA", desc: "關空特急", detail: "16:04 抵達京都。記得在 Klook 訂票 ($424)", type: "transport", link: "https://www.klook.com" },
-                    { time: "16:15", loc: "アルアホテル京都", desc: "飯店 Check-in", detail: "地址：下京区東洞院通七条下る塩小路町518", type: "hotel" },
-                    { time: "16:45", loc: "京都站周邊", desc: "友都八喜 / 唐吉軻德", detail: "逛 GU、UNIQLO。晚餐推居酒屋或弘燒肉", type: "food" }
-                ]
-            },
-            2: {
-                date: "3/7 (六)", title: "清水寺走走走", weather: "13°C ☁️",
-                items: [
-                    { time: "09:00", loc: "璃光和服 祇園店", desc: "和服體驗", detail: "公車 206 至東山安井。13:00 前需還衣", type: "activity" },
-                    { time: "10:00", loc: "清水寺", desc: "世界遺產", detail: "建議直接搭計程車上山省體力", type: "activity" },
-                    { time: "13:30", loc: "玄品ふぐ", desc: "河豚午餐", detail: "體驗大阪/京都特色河豚料理", type: "food" },
-                    { time: "16:00", loc: "京都 Porta / 伊勢丹", desc: "百貨攻略", detail: "伴手禮街、拉麵小路、3coin 貝果", type: "food" }
-                ]
-            },
-            3: {
-                date: "3/8 (日)", title: "京都奈良一日遊", weather: "14°C ☀️",
-                items: [
-                    { time: "09:00", loc: "Klook 一日團", desc: "奈良-伏見稻荷-嵐山", detail: "渡月橋散策。18:30 大阪下車", type: "activity", link: "https://s.klook.com/c/m145rgq5yO" },
-                    { time: "19:00", loc: "東橫 INN 大阪難波", desc: "飯店 Check-in", detail: "晚上可逛戎橋筋/心齋橋", type: "hotel" }
-                ]
-            },
-            4: {
-                date: "3/9 (一)", title: "環球影城 USJ", weather: "15°C ☀️",
-                items: [
-                    { time: "07:30", loc: "難波出發", desc: "搭乘阪神/JR", detail: "預計 08:15 抵達環球影城站", type: "transport" },
-                    { time: "08:15", loc: "USJ 入園", desc: "全力開玩", detail: "必搶任天堂整理券、玩飛天翼龍", type: "activity" },
-                    { time: "14:00", loc: "NO LIMIT! 巡遊", desc: "大巡遊", detail: "記得提前在路邊卡位", type: "activity" },
-                    { time: "19:00", loc: "難波周邊", desc: "晚餐補貨", detail: "吃烤肉或 CityWalk 晚餐", type: "food" }
-                ]
-            },
-            5: {
-                date: "3/10 (二)", title: "大阪勝運巡禮", weather: "12°C ☁️",
-                items: [
-                    { time: "09:30", loc: "勝尾寺", desc: "祈求勝運", detail: "拍滿山遍野的達摩偶。早起搭巴士/計程車", type: "activity" },
-                    { time: "12:30", loc: "大阪城公園", desc: "天守閣", detail: "拍天守閣、搭護城河船", type: "activity" },
-                    { time: "15:00", loc: "千日前道具街", desc: "主婦天堂", detail: "買餐具、食品模型、刀具", type: "activity" },
-                    { time: "17:00", loc: "通天閣/新世界", desc: "炸串晚餐", detail: "玩溜滑梯。晚餐：元祖炸串達摩", type: "food" }
-                ]
-            },
-            6: {
-                date: "3/11 (三)", title: "準備回台", weather: "11°C ☀️",
-                items: [
-                    { time: "08:00", loc: "南海難波站", desc: "南海 Rapi:t", detail: "約 40 分抵達關西 T1", type: "transport" },
-                    { time: "11:30", loc: "關西 T1", desc: "起飛回程", detail: "13:50 抵達桃園 T1", type: "transport" }
-                ]
-            }
-        };
-
-        // 初始化日期按鈕
-        function initButtons() {
-            const selector = document.getElementById('day-selector');
-            for (let i = 1; i <= 6; i++) {
-                const btn = document.createElement('button');
-                btn.className = `flex-shrink-0 w-20 h-24 border-4 border-black flex flex-col items-center justify-center bg-white text-black rounded-xl neo-brutal day-btn`;
-                btn.id = `btn-day-${i}`;
-                btn.onclick = () => showDay(i);
-                btn.innerHTML = `<span class="text-xs font-bold">DAY ${i}</span><span class="text-lg font-black italic">${3}/${5+i}</span>`;
-                selector.appendChild(btn);
-            }
-            showDay(1); // 預設顯示第一天
-        }
-
-        // 顯示該天行程
-        function showDay(dayNum) {
-            // 更新按鈕樣式
-            document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('day-btn-active'));
-            document.getElementById(`btn-day-${dayNum}`).classList.add('day-btn-active');
-
-            const data = travelData[dayNum];
-            document.getElementById('display-date').innerText = `${data.date} DAY ${dayNum}`;
-            document.getElementById('weather-box').innerText = data.weather;
-
-            const container = document.getElementById('timeline-container');
-            container.innerHTML = '<div class="absolute left-10 top-0 bottom-0 w-1 bg-gray-300 -z-10"></div>';
-
-            data.items.forEach((item, idx) => {
-                const color = item.type === 'transport' ? 'blue-500' : item.type === 'food' ? 'orange-500' : item.type === 'hotel' ? 'purple-500' : 'green-500';
-                const card = `
-                    <div class="relative pl-12" onclick="toggleDetail('d-${dayNum}-${idx}')">
-                        <div class="absolute left-2 top-0 w-6 h-6 bg-${color} border-4 border-black rounded-full z-10"></div>
-                        <div class="bg-white neo-brutal rounded-2xl overflow-hidden">
-                            <div class="border-l-[12px] border-${color} p-4">
-                                <h2 class="text-xl font-black flex justify-between items-center">
-                                    ${item.loc}
-                                    <span class="text-xs bg-black text-white px-2 py-1">${item.time}</span>
-                                </h2>
-                                <p class="text-sm font-bold text-gray-400 mt-1 italic">${item.desc}</p>
-                                <div id="d-${dayNum}-${idx}" class="hidden mt-4 pt-4 border-t-2 border-dashed border-gray-200">
-                                    <p class="text-sm font-bold text-gray-700 leading-relaxed">${item.detail}</p>
-                                    ${item.link ? `<a href="${item.link}" target="_blank" class="block mt-3 bg-black text-white text-center py-2 font-black border-2 border-black">🔗 相關連結</a>` : ''}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                container.innerHTML += card;
-            });
-        }
-
+        // 切換詳細資訊顯示
         function toggleDetail(id) {
-            const el = document.getElementById(id);
-            el.classList.toggle('hidden');
+            const detail = document.getElementById(id);
+            if (detail.classList.contains('hidden')) {
+                detail.classList.remove('hidden');
+            } else {
+                detail.classList.add('hidden');
+            }
         }
 
-        function calculateRate() {
-            const jpy = prompt("輸入日幣金額 (JPY):", "1000");
-            if (jpy) alert(`日幣 ¥${jpy} ≈ 台幣 $${Math.round(jpy * 0.21)}`);
+        // 切換天數標題 (示範用)
+        function showDay(dayNum) {
+            const titles = {
+                1: "3/6 京都抵達",
+                2: "3/7 清水寺巡禮",
+                3: "3/8 奈良一日遊"
+            };
+            document.getElementById('current-day-title').innerText = titles[dayNum];
+            alert("正在切換至 Day " + dayNum + " 的行程...");
         }
-
-        window.onload = initButtons;
     </script>
 </body>
 </html>
